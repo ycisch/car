@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+    <settings>
+        <!--打印日志可以看执行的sql语句-->
+        <setting name="logImpl" value="STDOUT_LOGGING"/>
+    </settings>
+
+    <!-- 为sql映射文件中的输入/输出参数设置类型别名 -->
+    <typeAliases>
+        <package name="com.project.model"/>
+    </typeAliases>
+
+
+</configuration>

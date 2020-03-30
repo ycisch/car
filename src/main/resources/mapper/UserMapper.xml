@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.project.mapper.UserMapper">
+
+
+    <resultMap id="UserInfoMapper" type="com.project.model.User">
+        <id property="userId" column="user_id"/>
+        <result property="userType" column="user_type"/>
+        <result property="userName" column="user_name"/>
+        <result property="userPassword" column="user_password"/>
+        <result property="userUserName" column="user_username"/>
+    </resultMap>
+
+    <!--登陆-->
+    <select id="userLogin" resultMap="UserInfoMapper">
+        SELECT * FROM truck_user
+        <where>
+            <if test="username != '' and username != null">
+                user_username = #{username}
+            </if>
+            <if test="password != '' and password != null">
+                AND user_password = #{password}
+            </if>
+            <if test="userType != '' and userType != null">
+                AND user_type = #{userType}
+            </if>
+        </where>
+    </select>
+
+    <!--插入-->
+    <insert id="addUser">
+        INSERT INTO truck_user(user_type,user_name,user_username,user_password)
+        VALUES
+        (#{userType},#{userName},#{userUserName},#{userPassword})
+    </insert>
+
+
+    <!--查询-->
+    <select id="findAllUser" resultMap="UserInfoMapper">
+        SELECT * FROM truck_user
+        <where>
+            user_type = 2
+            <if test="userName != null and userName != ''">
+                AND user_name LIKE concat(concat('%',#{userName}),'%')
+            </if>
+        </where>
+    </select>
+
+    <!--修改-->
+    <update id="updateUser">
+        UPDATE truck_user
+        <set>
+            <if test="userType != null and userType != ''">
+                user_type = #{userType},
+            </if>
+            <if test="userName != null and userName != ''">
+                user_name = #{userName},
+            </if>
+            <if test="userUserName != null and userUserName != ''">
+                user_username = #{userUserName},
+            </if>
+            <if test="userPassword != null and userPassword != ''">
+                user_password = #{userPassword}
+            </if>
+        </set>
+        <where>
+            user_id = #{userId}
+        </where>
+    </update>
+
+    <!--删除-->
+    <delete id="deleteUser">
+        DELETE FROM truck_user WHERE user_id =
+        <foreach collection="array" item="ids" open="(" separator="," close=")">
+            #{ids}
+        </foreach>
+    </delete>
+
+</mapper>
