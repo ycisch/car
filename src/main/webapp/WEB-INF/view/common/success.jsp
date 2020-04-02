@@ -18,7 +18,7 @@
 </head>
 <body>
 <div class="page-404 text-c">
-    <p class="success-description">充值成功</p>
+    <p class="success-description">成功</p>
 </div>
 </body>
 

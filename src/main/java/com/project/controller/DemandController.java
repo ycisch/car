@@ -83,9 +83,9 @@ public class DemandController {
     public Map<String, Object> addDemand(Demand demand, HttpServletRequest request){
 //        demand.setUser((User)request.getSession().getAttribute("userInfo"));
         if(demandService.insertDemand(demand) > 0 ){
-            result.put("Success" ,true);
+            result.put("success" ,true);
         }else{
-            result.put("Success" ,false);
+            result.put("success" ,false);
             result.put("msg","添加失败");
         }
         return result;

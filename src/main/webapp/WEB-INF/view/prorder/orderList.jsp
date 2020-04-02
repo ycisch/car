@@ -43,41 +43,50 @@
                 fit: true,//自动大小
                 height: 300,
                 method: "post",
-                url: "getCarList",
-                idField: 'carId',
+                url: "../order/findAllOrder",
+                idField: 'recordId',
                 singleSelect: false,//是否单选
                 rownumbers: true,//行号
                 pagination: true,//分页控件
-                sortName: 'carId',
+                sortName: 'recordId',
                 sortOrder: 'DESC',
                 remoteSort: false,
                 columns: [[
                     {field: 'chk', checkbox: true, width: 50},
                     {
-                        field: 'carId', title: 'ID', width: 50, sortable: true,
+                        field: 'orderId', title: 'ID', width: 50, sortable: true,
                         sorter: function (a, b) {
                             return (a > b ? -1 : 1)
                         }
                     },
-                    {field: 'carName', title: '车名', width: 150},
-                    {field: 'carLicense', title: '牌照', width: 150},
-                    {field: 'carType', title: '类型 ', width: 150},
-                    {field: 'carTonnage', title: '吨位', width: 150},
-                    {field: 'carCount', title: '出车次数', width: 150},
-                    {field: 'carPerformance', title: '汽车性能', width: 150},
-                    {
-                        field: 'order.orderId', title: '订单号',
-                        formatter: function (value, row, index) {
-                            if (row.order) {
-                                return row.order.orderId;
-                            } else {
-                                return "暂无";
-                            }
+                    {field: 'orderStart', title: '开始地点', width: 150},
+                    {field: 'orderEnd', title: '结束地点', width: 150},
+                    {field: 'createTime', title: '开始时间 ',
+                        formatter : function(value){
+                            var date = new Date(value);
+                            var y = date.getFullYear();
+                            var m = date.getMonth() + 1;
+                            var d = date.getDate();
+                            var h = date.getHours();
+                            var M = date.getMinutes();
+                            return y + '-' +m + '-' + d + ' ' + h + ':' + M ;
                         },
-                        width: 90
-                    },
+                        width: 150},
+                    {field: 'endTime', title: '结束时间',
+                        formatter : function(value){
+                            var date = new Date(value);
+                            var y = date.getFullYear();
+                            var m = date.getMonth() + 1;
+                            var d = date.getDate();
+                            var h = date.getHours();
+                            var M = date.getMinutes();
+                            return y + '-' +m + '-' + d + ' ' + h + ':' + M ;
+                        },
+                        width: 150},
+                    {field: 'orderFare', title: '费用 ', width: 150},
+                    {field: 'orderStatus', title: '状态', width: 150},
                     {
-                        field: 'driver.driverName', title: '司机姓名',
+                        field: 'driver.driverName', title: '司机名',
                         formatter: function (value, row, index) {
                             if (row.driver) {
                                 return row.driver.driverName;
@@ -130,11 +139,11 @@
                     $(selectRows).each(function (i, row) {
                         ids[i] = row.carId;//将预删除行的id存储到数组中
                     });
-                    $.messager.confirm("消息提醒", "删除后将无法恢复该汽车信息! 确定继续?", function (r) {
+                    $.messager.confirm("消息提醒", "删除后将无法恢复该记录信息! 确定继续?", function (r) {
                         if (r) {
                             $.ajax({
                                 type: "post",
-                                url: "deleteCar",
+                                url: "../order/deleteOrder",
                                 data: {ids: ids},
                                 dataType: 'json',
                                 success: function (data) {
@@ -177,7 +186,7 @@
                                 var data = $("#addForm").serialize();//序列化表单信息
                                 $.ajax({
                                     type: "post",
-                                    url: "addCar",
+                                    url: "../order/insertOrder",
                                     data: data,
                                     dataType: 'json',
                                     success: function (data) {
@@ -234,7 +243,7 @@
                                 debugger;
                                 $.ajax({
                                     type: "post",
-                                    url: "editCar",
+                                    url: "../order/updateOrder",
                                     data: data,
                                     dataType: 'json',
                                     success: function (data) {
@@ -282,7 +291,7 @@
             //业主与班级名搜索按钮的监听事件(将其值返回给Controller)
             $("#search-btn").click(function () {
                 $('#dataList').datagrid('load', {
-                    carName: $('#search-carName').val(),//获取汽车名称
+                    orderStatus: $('#search-orderStatus').val(),//获取汽车名称
                 });
             });
 
@@ -334,122 +343,26 @@
 
 <!-- 工具栏 -->
 <div id="toolbar">
-    <div style="float: left;"><a id="add" href="javascript:" class="easyui-linkbutton"
-                                 data-options="iconCls:'icon-add',plain:true">添加</a></div>
-    <div style="float: left;" class="datagrid-btn-separator"></div>
-    <%-- 通过JSTL设置用户操作权限: 将修改和删除按钮设置为仅管理员可见	 --%>
-    <c:if test="${userType==1 || userType== 3 }">
-        <div style="float: left;"><a id="edit" href="javascript:" class="easyui-linkbutton"
-                                     data-options="iconCls:'icon-edit',plain:true">修改</a></div>
-        <div style="float: left;" class="datagrid-btn-separator"></div>
-        <div style="float: left;"><a id="delete" href="javascript:" class="easyui-linkbutton"
-                                     data-options="iconCls:'icon-some-delete',plain:true">删除</a></div>
-    </c:if>
 
     <div style="margin-left: 10px;">
         <div style="float: left;" class="datagrid-btn-separator"></div>
 
         <a href="javascript:" class="easyui-linkbutton"
-           data-options="iconCls:'icon-user-student',plain:true">汽车名称</a>
-        <input id="search-carName" class="easyui-textbox" name="carName"/>
+           data-options="iconCls:'icon-user-student',plain:true">订单状态</a>
+        <select name="orderStatus" id="search-orderStatus" class="easyui-combobox"
+                data-options="editable: false, panelHeight: 50, width: 100, height: 30,
+                            required:true, missingMessage:'请选择类别哟~'">
+            <option value="">请选择</option>
+            <option value="未接单">未接单</option>
+            <option value="已接单">已接单</option>
+            <option value="待支付">待支付</option>
+        </select>
         <!-- 搜索按钮 -->
         <a id="search-btn" href="javascript:" class="easyui-linkbutton"
            data-options="iconCls:'icon-search',plain:true">搜索</a>
     </div>
 </div>
 
-<!-- 添加信息窗口 -->
-<div id="addDialog" style="padding: 15px 0 0 55px;">
-    <form id="addForm" method="post" action="#">
-        <table id="addTable" style="border-collapse:separate; border-spacing:0 3px;" cellpadding="6">
-            <!-- 存储所上传的头像路径 -->
-            <tr>
-                <td>名称</td>
-                <td colspan="1">
-                    <input id="add_carName" style="width: 200px; height: 30px;" class="easyui-textbox"
-                           type="text" name="carName" data-options="required:true, missingMessage:'请填写名称哟~'"/>
-                </td>
-            </tr>
-            <tr>
-                <td>类型</td>
-                <td>
-                    <input id="add_carType" style="width: 200px; height: 30px;" class="easyui-textbox"
-                           type="text" name="carType" data-options="required:true, missingMessage:'请填写类型哟~'"/>
-                </td>
-            </tr>
-            <tr>
-                <td>牌照</td>
-                <td colspan="1">
-                    <input class="easyui-textbox" name="carLicense"
-                           data-options="required:true,showSeconds:false" value="3/4/2010" style="width:150px">
-                </td>
-            </tr>
-            <tr>
-                <td>吨位</td>
-                <td colspan="1">
-                    <input id="add_carTonnage" style="width: 200px; height: 30px;" class="easyui-textbox"
-                           type="text" name="carTonnage" data-options="required:true, missingMessage:'请填写吨位哟~'"/>
-                </td>
-            </tr>
-            <tr>
-                <td>汽车性能</td>
-                <td colspan="1">
-                    <input id="add_carPerformance" style="width: 200px; height: 30px;" class="easyui-textbox"
-                           type="text" name="carPerformance" data-options="required:true, missingMessage:'请填写性能哟~'"/>
-                </td>
-            </tr>
-        </table>
-    </form>
-</div>
-
-
-<!-- 修改信息窗口 -->
-<div id="editDialog" style="padding: 20px 0 0 65px">
-    <form id="editForm" method="post" action="#">
-        <input type="hidden" id="edit_id" name="carId"/>
-        <table id="editTable" style="border-collapse:separate; border-spacing:0 3px;" cellpadding="6">
-        <tr>
-            <td>名称</td>
-            <td colspan="1">
-                <input id="edit_carName" style="width: 200px; height: 30px;" class="easyui-textbox"
-                       type="text" name="carName" data-options="required:true, missingMessage:'请填写名称哟~'"/>
-            </td>
-        </tr>
-        <tr>
-            <td>类型</td>
-            <td>
-                <input id="edit_carType" style="width: 200px; height: 30px;" class="easyui-textbox"
-                       type="text" name="carType" data-options="required:true, missingMessage:'请填写类型哟~'"/>
-            </td>
-        </tr>
-        <tr>
-            <td>牌照</td>
-            <td colspan="1">
-                <input id="edit_carLicense" class="easyui-textbox" name="carLicense"
-                       data-options="required:true,showSeconds:false" value="3/4/2010" style="width:150px">
-            </td>
-        </tr>
-        <tr>
-            <td>吨位</td>
-            <td colspan="1">
-                <input id="edit_carTonnage" style="width: 200px; height: 30px;" class="easyui-textbox"
-                       type="text" name="carTonnage" data-options="required:true, missingMessage:'请填写吨位哟~'"/>
-            </td>
-        </tr>
-        <tr>
-            <td>汽车性能</td>
-            <td colspan="1">
-                <input id="edit_carPerformance" style="width: 200px; height: 30px;" class="easyui-textbox"
-                       type="text" name="carPerformance" data-options="required:true, missingMessage:'请填写性能哟~'"/>
-            </td>
-        </tr>
-        </table>
-    </form>
-</div>
-
-<!-- 表单处理 -->
-<%----%>
-<iframe id="photo_target" name="photo_target" onload="uploaded(this)"></iframe>
 <script>
     $('#demo-1').fdatepicker();
     $('#demo-2').fdatepicker({

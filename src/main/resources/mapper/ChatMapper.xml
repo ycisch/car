@@ -56,7 +56,7 @@
         b.usersex as uersex1,
         b.userphone as userphone1,
         b.userpassword as userpassword1
-        FROM chat
+        FROM pt_chat
         LEFT JOIN pt_user a ON a.userid = pt_chat.chatsend
         LEFT JOIN pt_user b ON b.userid = pt_chat.chatreceive
     </sql>
@@ -71,24 +71,24 @@
             <if test="chatTime != null">
                 AND chattime = #{chatTime}
             </if>
+            <if test="send != null">
+                AND a.userid = #{send.userId}
+            </if>
         </where>
+        GROUP BY  pt_chat.chatreceive
     </select>
 
     <!--查找双方的聊天信息-->
     <select id="findAllChatByUser" resultMap="ChatInfo">
         <include refid="common_sql"/>
         <where>
-            <if test="receive != null and receive.userName != null and receive.userName != ''">
-                b.username = #{receive.userName}
-            </if>
             <if test="chatTime != null">
                 AND chattime = #{chatTime}
             </if>
-            <if test="send != null">
-                AND a.userid = #{send.userId}
-            </if>
-            <if test="receive != null">
-                AND b.userid = #{receive.userId}
+            <if test="send != null and receive != null">
+                AND
+                ((a.userid = #{send.userId} AND b.userid = #{receive.userId})
+                OR (a.userid = #{receive.userId} AND b.userid = #{send.userId}))
             </if>
         </where>
     </select>
@@ -100,7 +100,7 @@
         count(*) as chatreceive,
         b.userid as userid1,
         b.username as username1
-        FROM chat
+        FROM pt_chat
         LEFT JOIN pt_user a ON a.userid = pt_chat.chatsend
         LEFT JOIN pt_user b ON b.userid = pt_chat.chatreceive
         GROUP BY b.userid
@@ -108,7 +108,7 @@
 
     <!--插入聊天信息-->
     <insert id="insertChat">
-        INSERT INTO pt_chat(chat.chatsend,chat.chatreceive,chat.chattime,chat.chatcontent)
+        INSERT INTO pt_chat(pt_chat.chatsend,pt_chat.chatreceive,pt_chat.chattime,pt_chat.chatcontent)
         VALUES(#{chatSend},#{chatReceive},NOW(),#{chatContent})
     </insert>
 </mapper>

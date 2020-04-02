@@ -96,7 +96,7 @@ public class DriverController {
      */
     @RequestMapping("editDriver")
     @ResponseBody
-    public Map<String,Object>updataDriver(Driver driver){
+    public Map<String,Object> updataDriver(Driver driver){
         if(driverService.updateDriver(driver) > 0){
             result.put("success", true);
         }
@@ -116,7 +116,7 @@ public class DriverController {
      */
     @RequestMapping("getDriverList")
     @ResponseBody
-    public Map<String,Object>findAllDriver(Integer page, Integer rows,Driver driver){
+    public Map<String,Object> findAllDriver(Integer page, Integer rows,Driver driver){
         //设置每页的记录数
         PageHelper.startPage(page, rows);
         //查询公告信息

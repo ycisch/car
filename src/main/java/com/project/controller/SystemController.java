@@ -1,17 +1,25 @@
 package com.project.controller;
 
+import com.project.model.Chat;
+import com.project.model.User;
+import com.project.service.ChatService;
 import com.project.util.CreateVerifiCodeImage;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @program: car
@@ -23,6 +31,9 @@ import java.io.IOException;
 @RequestMapping("sys")
 @Controller
 public class SystemController {
+
+    @Autowired
+    ChatService chatService;
 
     /**
      * @description: 获取并显示验证码图片
@@ -81,8 +92,25 @@ public class SystemController {
     */
     @RequestMapping("chatList")
     @ApiOperation(value = "跳转到聊天界面",httpMethod = "GET")
-    public String goChatList(){
-        return "prchat/chatList";
+    public ModelAndView goChatList(HttpServletRequest request, ModelAndView model){
+
+        //获取所有聊天信息与数量
+        Chat chat = new Chat();
+        User send = (User) request.getSession().getAttribute("userInfo");
+        chat.setSend(send);
+        List<Chat> chatList = chatService.findAllChat(chat);
+        List<List<Chat>> chatList1 = new ArrayList<>();
+
+        for (Chat chat1 : chatList) {
+            chat.setReceive(chat1.getReceive());
+            List<Chat> list = chatService.findAllChatByUser(chat);
+            chatList1.add(list);
+        }
+
+        model.addObject("chatList",chatList);
+        model.addObject("chatList1",chatList1);
+        model.setViewName("prchat/chatList");
+        return model;
     }
 
     /**
@@ -213,5 +241,24 @@ public class SystemController {
     @ApiOperation(value = "跳转到管理员信息界面",httpMethod = "GET")
     public String goAdminInfo(){
         return "pradmin/adminInfo";
+    }
+
+    /**
+     *@Description: 跳转到用户个人信息页面
+     *@Param: []
+     *@return: java.lang.String
+     *@Author: Administrator
+     *@date: 2020/3/30
+     */
+    @RequestMapping("userPosition")
+    @ApiOperation(value = "跳转到用户选择地址",httpMethod = "GET")
+    public String gouserPosition(){
+        return "pruser/userPosition";
+    }
+
+    @RequestMapping("addDemandView")
+    @ApiOperation(value = "跳转到需求添加地址",httpMethod = "GET")
+    public String addDemandView(){
+        return "prdemand/addDemand";
     }
 }

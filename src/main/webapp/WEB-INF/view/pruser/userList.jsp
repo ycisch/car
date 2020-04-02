@@ -248,7 +248,7 @@
                 //打开窗口前先初始化表单数据(表单回显)
                 onBeforeOpen: function () {
                     var selectRow = $("#dataList").datagrid("getSelected");
-                    $("#edit_id").val(selectRow.carId);//初始化id值,需根据id更新汽车信息
+                    $("#edit_id").val(selectRow.userId);//初始化id值,需根据id更新汽车信息
                     $("#edit_userFirstName").textbox('setValue', selectRow.userFirstName);
                     $("#edit_userLastName").textbox('setValue', selectRow.userLastName);
                     $("#edit_userSex").textbox('setValue', selectRow.userSex);
@@ -388,7 +388,7 @@
 <!-- 修改信息窗口 -->
 <div id="editDialog" style="padding: 20px 0 0 65px">
     <form id="editForm" method="post" action="#">
-        <input type="hidden" id="edit_id" name="carId"/>
+        <input type="hidden" id="edit_id" name="userId"/>
         <table id="editTable" style="border-collapse:separate; border-spacing:0 3px;" cellpadding="6">
             <tr>
                 <td>姓：</td>

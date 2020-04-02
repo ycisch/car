@@ -132,8 +132,8 @@
 
 <!-- 修改信息窗口 -->
 <div id="editDialog" style="padding: 20px 0 0 65px">
-    <form id="editForm" method="post" action="#">
-        <input type="hidden" id="edit_id" name="carId"/>
+    <form id="editForm" method="post" action="${pageContext.request.contextPath}/user/editUser">
+        <input type="hidden" id="edit_id" name="userId" value="${userInfo.userId}"/>
         <table id="editTable" style="border-collapse:separate; border-spacing:0 3px;" cellpadding="6">
             <tr>
                 <td>姓：</td>

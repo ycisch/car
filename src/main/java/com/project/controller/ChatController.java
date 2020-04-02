@@ -3,6 +3,7 @@ package com.project.controller;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.project.model.Chat;
+import com.project.model.User;
 import com.project.service.ChatService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -86,5 +88,28 @@ public class ChatController {
         List<Chat> chatList = chatService.findAllChatCount(chat);
         result.put("rows", chatList);
         return result;
+    }
+
+    @ApiOperation(value = "添加聊天信息",httpMethod = "GET")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name="chat",value = "聊天信息",paramType = "query")
+    })
+    @RequestMapping("insertChat")
+    public String insertChat(Chat chat, Integer receiveIds, HttpServletRequest request) {
+
+        System.out.println("asd");
+
+        User user = (User) request.getSession().getAttribute("userInfo");
+
+        chat.setChatSend(user.getUserId());
+        chat.setChatReceive(receiveIds);
+
+        if(chatService.insertChat(chat) > 0){
+            result.put("success", true);
+        }else{
+            result.put("success", false);
+            result.put("msg", "添加失败! (ಥ_ಥ)服务器端发生异常!");
+        }
+        return "redirect:/sys/chatList";
     }
 }

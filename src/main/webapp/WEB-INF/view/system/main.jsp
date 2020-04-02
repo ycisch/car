@@ -126,32 +126,38 @@
                         {
                             "menuid": "28",
                             "menuname": "显示个人信息",
-                            "icon": "icon-settings",
+                            "icon": "icon-user",
                             "url": "../sys/userInfo"
                         },
                         {
                             "menuid": "29",
                             "menuname": "发布需求",
-                            "icon": "icon-settings",
-                            "url": "../demand/addDemanView"
+                            "icon": "icon-add",
+                            "url": "../sys/addDemandView"
                         },
                         {
                             "menuid": "30",
                             "menuname": "查看附近车辆",
-                            "icon": "icon-settings",
+                            "icon": "icon-edit",
                             "url": "../driver/inputPosition"
                         },
                         {
                             "menuid": "31",
                             "menuname": "查看聊天信息",
-                            "icon": "icon-settings",
+                            "icon": "icon-user",
                             "url": "../sys/chatList"
                         },
+                        // {
+                        //     "menuid": "32",
+                        //     "menuname": "平台打分",
+                        //     "icon": "icon-settings",
+                        //     "url": "../common/addScore"
+                        // },
                         {
-                            "menuid": "32",
-                            "menuname": "平台打分",
-                            "icon": "icon-settings",
-                            "url": "../common/addScore"
+                            "menuid": "38",
+                            "menuname": "顾客选择地址",
+                            "icon": "icon-student",
+                            "url": "../sys/userPosition"
                         }
                     ]
                 },

@@ -2,7 +2,6 @@ package com.project.controller;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.project.common.CalculateDistance;
 import com.project.model.Admin;
 import com.project.model.Driver;
 import com.project.model.LoginForm;
@@ -209,12 +208,23 @@ public class UserController {
         return "common/success";
     }
 
+
     @ResponseBody
     @RequestMapping("editUser")
-    public Map<String, Object> updateUser(User user) {
+    public Map<String, Object> updateUser(User user,HttpServletRequest request) {
+
+        user.setUserName(user.getUserFirstName()+user.getUserLastName());
 
         if(userService.updateUser(user) > 0){
             result.put("success", true);
+            User user1 = (User) request.getSession().getAttribute("userInfo");
+            user1.setUserFirstName(user.getUserFirstName());
+            user1.setUserLastName(user.getUserLastName());
+            user1.setUserName(user.getUserName());
+            user1.setUserSex(user.getUserSex());
+            user1.setUserPhone(user.getUserPhone());
+            user1.setUserPassword(user.getUserPassword());
+            request.getSession().setAttribute("userInfo",user1);
         }else{
             result.put("success", false);
             result.put("msg", "修改失败! (ಥ_ಥ)服务器端发生异常!");
