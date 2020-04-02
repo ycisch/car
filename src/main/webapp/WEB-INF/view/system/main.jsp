@@ -17,7 +17,7 @@
     <!-- 引入CSS -->
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/easyui/css/default.css"/>
     <link rel="stylesheet" type="text/css"
-          href="${pageContext.request.contextPath}/static/easyui/themes/metro-red/easyui.css"/>
+          href="${pageContext.request.contextPath}/static/easyui/themes/default/easyui.css"/>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/static/easyui/themes/icon.css"/>
     <!-- 引入JS -->
     <script type="text/javascript" src="${pageContext.request.contextPath}/static/easyui/jquery.min.js"></script>
@@ -83,10 +83,10 @@
                 </c:if>
                 <c:if test="${userType == 1}">
                 {
-                    "menuid": "3", "icon": "", "menuname": "管理员信息管理",
+                    "menuid": "4", "icon": "", "menuname": "管理员信息管理",
                     "menus": [
                         {
-                            "menuid": "25",
+                            "menuid": "24",
                             "menuname": "修改个人信息",
                             "icon": "icon-edit",
                             "url": "../sys/adminList"
@@ -94,25 +94,24 @@
                     ]
                 },
                 </c:if>
-                <c:if test="${userType == 2}">
+                <c:if test="${userType == 2 || userType == 1}">
                 {
-                    "menuid": "6", "icon": "", "menuname": "个人行程记录",
+                    "menuid": "5", "icon": "", "menuname": "个人行程记录",
                     "menus": [
                         {
-                            "menuid": "27",
+                            "menuid": "25",
                             "menuname": "记录列表",
                             "icon": "icon-settings",
                             "url": "../sys/recordList"
                         },
                         {
-                            "menuid": "31",
+                            "menuid": "26",
                             "menuname": "收藏列表",
                             "icon": "icon-settings",
                             "url": "../sys/choucanglist"
                         },
-                        ,
                         {
-                            "menuid": "31",
+                            "menuid": "27",
                             "menuname": "订单列表",
                             "icon": "icon-settings",
                             "url": "../sys/orderList"
@@ -120,30 +119,36 @@
                     ]
                 },
                 </c:if>
-                <c:if test="${userType == 2}">
+                <c:if test="${userType == 2 || userType == 1}">
                 {
                     "menuid": "6", "icon": "", "menuname": "出行服务",
                     "menus": [
                         {
                             "menuid": "28",
+                            "menuname": "显示个人信息",
+                            "icon": "icon-settings",
+                            "url": "../sys/userInfo"
+                        },
+                        {
+                            "menuid": "29",
                             "menuname": "发布需求",
                             "icon": "icon-settings",
                             "url": "../demand/addDemanView"
                         },
                         {
-                            "menuid": "29",
+                            "menuid": "30",
                             "menuname": "查看附近车辆",
                             "icon": "icon-settings",
-                            "url": "../driver/driverNow"
+                            "url": "../driver/inputPosition"
                         },
                         {
-                            "menuid": "30",
+                            "menuid": "31",
                             "menuname": "查看聊天信息",
                             "icon": "icon-settings",
                             "url": "../sys/chatList"
                         },
                         {
-                            "menuid": "37",
+                            "menuid": "32",
                             "menuname": "平台打分",
                             "icon": "icon-settings",
                             "url": "../common/addScore"
@@ -151,36 +156,36 @@
                     ]
                 },
                 </c:if>
-                <c:if test="${userType == 3}">
+                <c:if test="${userType == 3 || userType == 1}">
                 {
                     "menuid": "7", "icon": "", "menuname": "出行服务",
                     "menus": [
                         {
-                            "menuid": "32",
+                            "menuid": "33",
                             "menuname": "个人信息修改",
                             "icon": "icon-settings",
                             "url": "../info/goInfoView"
                         },
                         {
-                            "menuid": "33",
+                            "menuid": "34",
                             "menuname": "查看出行记录",
                             "icon": "icon-settings",
                             "url": "../info/goInfoView1"
                         },
                         {
-                            "menuid": "34",
+                            "menuid": "35",
                             "menuname": "查看留言",
                             "icon": "icon-settings",
                             "url": "../info/goInfoView1"
                         },
                         {
-                            "menuid": "35",
+                            "menuid": "36",
                             "menuname": "查看个人信息",
                             "icon": "icon-settings",
                             "url": "../info/goInfoView1"
                         },
                         {
-                            "menuid": "36",
+                            "menuid": "37",
                             "menuname": "平台打分",
                             "icon": "icon-settings",
                             "url": "../info/goInfoView1"
@@ -210,7 +215,7 @@
         	</span>
             <%-- 从Session中获取登录用户的用户名	--%>
         	<span style="color:red; font-weight:bold;">
-                <c:if test="${userType == 1}">${userInfo.userName}</c:if>
+                <c:if test="${userType == 1}">${adminInfo.adminName}</c:if>
                 <c:if test="${userType == 2}">${userInfo.userName}</c:if>
                 <c:if test="${userType == 3}">${userInfo.userName}</c:if>
             </span>

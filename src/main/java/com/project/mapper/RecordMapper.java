@@ -17,11 +17,11 @@ public interface RecordMapper {
     /**
      *@Description: 查看所有记录信息
      *@Param: [record]
-     *@return: java.util.List<com.project.model.Order>
+     *@return: java.util.List<com.project.model.Record>
      *@Author: Administrator
      *@date: 2020/3/30
      */
-    List<Order> findAllRecord(Record record);
+    List<Record> findAllRecord(Record record);
 
     /**
      *@Description: 添加记录信息

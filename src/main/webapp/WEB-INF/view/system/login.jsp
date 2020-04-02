@@ -46,12 +46,12 @@
                     var data = $("#form").serialize();
                     $.ajax({
                         type: "post",
-                        url: "login",
+                        url: "../user/login",
                         data: data,
                         dataType: "json",
                         success: function (data) {
                             if (data.success) {
-                                window.location.href = "goSystemMainView";//进入系统主页面
+                                window.location.href = "../user/goSystemMainView";//进入系统主页面
                             } else {
                                 $.messager.alert("提示", data.msg, "warning");
                                 $("#vcodeImg").click();//切换验证码

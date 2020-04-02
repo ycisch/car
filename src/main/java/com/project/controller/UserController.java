@@ -2,8 +2,12 @@ package com.project.controller;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.project.model.Admin;
+import com.project.model.Driver;
 import com.project.model.LoginForm;
 import com.project.model.User;
+import com.project.service.AdminService;
+import com.project.service.DriverService;
 import com.project.service.UserService;
 import com.project.util.CreateVerifiCodeImage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +37,12 @@ public class UserController {
     @Autowired
     UserService userService;
 
+    @Autowired
+    AdminService adminService;
+
+    @Autowired
+    DriverService driverService;
+
     //存储返回给页面的对象数据
     private Map<String, Object> result = new HashMap<>();
 
@@ -61,13 +71,31 @@ public class UserController {
 
         //效验用户登录信息
         try {
-            User user = userService.userLogin(loginForm);//验证账户和密码是否存在
-            if (user != null) {
-                HttpSession session = request.getSession(); //将用户信息存储到Session
-                session.setAttribute("userInfo", user);
-                session.setAttribute("userType", loginForm.getUserType());
-                result.put("success", true);
-                return result;
+
+            int type = loginForm.getUserType();
+            if(type == 1){
+
+                Admin admin = new Admin();
+                admin.setAdminName(loginForm.getUsername());
+                admin.setAdminPassword(loginForm.getPassword());
+                admin = adminService.adminLogin(admin);
+                if (admin != null) {
+                    HttpSession session = request.getSession(); //将用户信息存储到Session
+                    session.setAttribute("adminInfo", admin);
+                    session.setAttribute("userType", loginForm.getUserType());
+                    result.put("success", true);
+                    return result;
+                }
+            }else if(type == 2){
+                User user = userService.userLogin(loginForm);//验证账户和密码是否存在
+                if (user != null) {
+                    HttpSession session = request.getSession(); //将用户信息存储到Session
+                    session.setAttribute("userInfo", user);
+                    session.setAttribute("userType", loginForm.getUserType());
+                    result.put("success", true);
+                    return result;
+                }
+            }else{
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -197,7 +225,7 @@ public class UserController {
      *@date: 2020/3/9
      */
     @ResponseBody
-    @RequestMapping("getUserList")
+    @RequestMapping("findAllUser")
     public Map<String, Object> findAllUser(Integer page, Integer rows,User user) {
 
         //设置每页的记录数

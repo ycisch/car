@@ -2,4 +2,144 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.project.mapper.OrderMapper">
 
+    <resultMap id="OrderInfo" type="com.project.model.Order">
+        <id property="orderId" column="orderid"/>
+        <result property="orderType" column="ordertype"/>
+        <result property="orderStart" column="orderstart"/>
+        <result property="orderEnd" column="orderend"/>
+        <result property="createTime" column="createtime"/>
+        <result property="endTime" column="endtime"/>
+        <result property="orderFare" column="orderfare"/>
+        <result property="orderScore" column="orderscore"/>
+        <result property="orderStatus" column="orderstatus"/>
+        <association property="user" resultMap="UserInfo"/>
+        <association property="driver" resultMap="DriverInfo"/>
+    </resultMap>
+
+    <!--用户信息-->
+    <resultMap id="UserInfo" type="com.project.model.User">
+        <id property="userId" column="userid"/>
+        <result property="userFirstName" column="userfirstname"/>
+        <result property="userLastName" column="userlastname"/>
+        <result property="userName" column="username"/>
+        <result property="userSex" column="usersex"/>
+        <result property="userPhone" column="userphone"/>
+        <result property="userPassword" column="userpassword"/>
+    </resultMap>
+
+    <!--汽车信息-->
+    <resultMap id="DriverInfo" type="com.project.model.Driver">
+        <id property="driverId" column="driverid"/>
+        <result property="driverFirstName" column="driverfirstname"/>
+        <result property="driverLastName" column="driverlastname"/>
+        <result property="driverName" column="drivername"/>
+        <result property="driverSex" column="driversex"/>
+        <result property="driverPhone" column="driverphone"/>
+        <result property="driverPassword" column="driverpassword"/>
+        <result property="driverCardid" column="drivercardid"/>
+        <result property="carId" column="carid"/>
+        <result property="carType" column="cartype"/>
+        <result property="carColor" column="carcolor"/>
+        <result property="carSeat" column="carseat"/>
+        <result property="carStatus" column="carstatus"/>
+        <result property="carPosition" column="carposition"/>
+        <result property="carNum" column="carnum"/>
+        <result property="distance" column="distance"/>
+        <result property="carScore" column="carscore"/>
+    </resultMap>
+
+    <!--关联查询-->
+    <sql id="common_sql">
+        SELECT
+        pt_order.orderid,
+        pt_order.ordertype,
+        pt_order.orderstart,
+        pt_order.orderend,
+        pt_order.driverid,
+        pt_order.userid,
+        pt_order.createtime,
+        pt_order.endtime,
+        pt_order.orderfare,
+        pt_order.orderscore,
+        pt_order.orderstatus,
+        pt_user.userid,
+        pt_user.userfirstname,
+        pt_user.userlastname,
+        pt_user.username,
+        pt_user.usersex,
+        pt_user.userphone,
+        pt_user.userpassword,
+        pt_driver.driverid,
+        pt_driver.driverfirstname,
+        pt_driver.driverlastname,
+        pt_driver.drivername,
+        pt_driver.driversex,
+        pt_driver.driverphone,
+        pt_driver.driverpassword,
+        pt_driver.drivercardid,
+        pt_driver.carid,
+        pt_driver.cartype,
+        pt_driver.carcolor,
+        pt_driver.carseat,
+        pt_driver.carstatus,
+        pt_driver.carposition,
+        pt_driver.carnum,
+        pt_driver.distance,
+        pt_driver.carscore
+        FROM pt_order
+        LEFT JOIN pt_user ON pt_order.userid = pt_user.userid
+        LEFT JOIN pt_driver ON pt_order.driverid = pt_driver.driverid
+    </sql>
+
+    <!--查询所有订单 可以根据时间去查找与类型去查找-->
+    <select id="findAllOrder" resultMap="OrderInfo">
+        <include refid="common_sql"/>
+        <where>
+            <if test="createTime != null">
+                pt_order.createtime &lt;= #{createTime}
+            </if>
+            <if test="endTime != null">
+                AND pt_order.endtime &gt;= #{endTime}
+            </if>
+            <if test="orderStatus != null and orderStatus != ''">
+                AND pt_order.orderstatus = #{orderStatus}
+            </if>
+        </where>
+    </select>
+
+    <!--添加订单信息-->
+    <insert id="insertOrder">
+        INSERT INTO pt_order(pt_order.ordertype,pt_order.orderstart,pt_order.orderend,pt_order.driverid,pt_order.userid,pt_order.createtime,pt_order.orderfare,pt_order.orderscore,pt_order.orderstatus)
+        VALUES(#{orderType},#{orderStart},#{orderEnd},#{driverId},#{userId},NOW(),#{orderFare},#{orderScore},#{orderStatus})
+    </insert>
+
+    <!--修改订单信息-->
+    <update id="updateOrder">
+        UPDATE pt_order
+        <set>
+            <if test="orderStatus != null and orderStatus != ''">
+                orderstatus = #{orderStatus},
+            </if>
+            <if test="endTime != null">
+                endtime = NOW(),
+            </if>
+            <if test="orderScore != 0.0">
+                orderscore = #{orderScore}
+            </if>
+        </set>
+        <where>
+            <if test="orderId != 0">
+                orderid = #{orderId}
+            </if>
+        </where>
+    </update>
+
+    <!--删除订单信息-->
+    <delete id="deleteOrder">
+        DELETE FROM pt_order WHERE orderid =
+        <foreach collection="array" item="ids" open="(" separator="," close=")">
+            #{ids}
+        </foreach>
+    </delete>
+
 </mapper>

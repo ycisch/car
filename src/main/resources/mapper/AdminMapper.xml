@@ -2,4 +2,44 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.project.mapper.AdminMapper">
 
+    <resultMap id="AdminInfo" type="com.project.model.Admin">
+        <id property="adminId" column="adminid"/>
+        <result property="adminName" column="adminname"/>
+        <result property="adminPassword" column="adminpassword"/>
+    </resultMap>
+
+    <!--查询管理员个人信息-->
+    <select id="findAdminInfo" resultMap="AdminInfo">
+        SELECT * FROM pt_admin
+        <where>
+            <if test="adminId != 0">
+                adminid = #{adminId};
+            </if>
+        </where>
+    </select>
+
+    <!--修改管理员信息-->
+    <update id="updateAdmin">
+        UPDATE pt_admin
+        <set>
+            <if test="adminName != null and adminName != ''">
+                adminname = #{adminName},
+            </if>
+            <if test="adminPassword != null and adminPassword != ''">
+                adminPassword = #{adminPassword}
+            </if>
+        </set>
+        <where>
+            adminid = #{adminId}
+        </where>
+    </update>
+
+    <!--管理员登陆-->
+    <select id="adminLogin" resultMap="AdminInfo">
+        SELECT * FROM pt_admin
+        <where>
+            adminname = #{adminName}
+            AND adminpassword = #{adminPassword}
+        </where>
+    </select>
 </mapper>

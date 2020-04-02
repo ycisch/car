@@ -14,7 +14,7 @@
 <body>
 <div title="欢迎页面" style="padding: 20px; overflow: hidden; color: #8A2BE2;font: lighter 12px 'Lucida Sans Unicode';"
      data-options="iconCls:'icon-heart',plain:true">
-    <p style="font-size: 30px; line-height: 30px; height: 30px;">欢迎来到车辆管理系统</p>
+    <p style="font-size: 30px; line-height: 30px; height: 30px;">欢迎来到拼车系统</p>
     <%--<table>--%>
         <%--<tr>--%>
             <%--<td width="300px"><p>开发人员: 吃货智</p></td>--%>

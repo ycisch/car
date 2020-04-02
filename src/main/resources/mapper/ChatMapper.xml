@@ -2,4 +2,113 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.project.mapper.ChatMapper">
 
+    <!--聊天信息-->
+    <resultMap id="ChatInfo" type="com.project.model.Chat">
+        <id property="chatId" column="charid"/>
+        <result property="chatTime" column="chattime"/>
+        <result property="chatContent" column="chatcontent"/>
+        <result property="chatReceive" column="chatreceive"/>
+        <association property="send" resultMap="SendInfo"/>
+        <association property="receive" resultMap="ReceiveInfo"/>
+    </resultMap>
+
+    <!--发送人信息-->
+    <resultMap id="SendInfo" type="com.project.model.User">
+        <id property="userId" column="userid"/>
+        <result property="userFirstName" column="userfirstname"/>
+        <result property="userLastName" column="userlastname"/>
+        <result property="userName" column="username"/>
+        <result property="userSex" column="usersex"/>
+        <result property="userPhone" column="userphone"/>
+        <result property="userPassword" column="userpassword"/>
+    </resultMap>
+
+    <!--接收人信息-->
+    <resultMap id="ReceiveInfo" type="com.project.model.User">
+        <id property="userId" column="userid1"/>
+        <result property="userFirstName" column="userfirstname1"/>
+        <result property="userLastName" column="userlastname1"/>
+        <result property="userName" column="username1"/>
+        <result property="userSex" column="usersex1"/>
+        <result property="userPhone" column="userphone1"/>
+        <result property="userPassword" column="userpassword1"/>
+    </resultMap>
+
+    <!--查找所有聊天信息的共同语句-->
+    <sql id="common_sql">
+        SELECT
+        pt_chat.chatid,
+        pt_chat.chatsend,
+        pt_chat.chatreceive,
+        pt_chat.chattime,
+        pt_chat.chatcontent,
+        a.userid,
+        a.userfirstname,
+        a.userlastname,
+        a.username,
+        a.usersex,
+        a.userphone,
+        a.userpassword,
+        b.userid as userid1,
+        b.userfirstname as userfirstname1,
+        b.userlastname as userlastname1,
+        b.username as username1,
+        b.usersex as uersex1,
+        b.userphone as userphone1,
+        b.userpassword as userpassword1
+        FROM chat
+        LEFT JOIN pt_user a ON a.userid = pt_chat.chatsend
+        LEFT JOIN pt_user b ON b.userid = pt_chat.chatreceive
+    </sql>
+
+    <!--查找聊天信息-->
+    <select id="findAllChat" resultMap="ChatInfo">
+        <include refid="common_sql"/>
+        <where>
+            <if test="receive != null and receive.userName != null and receive.userName != ''">
+                b.username = #{receive.userName}
+            </if>
+            <if test="chatTime != null">
+                AND chattime = #{chatTime}
+            </if>
+        </where>
+    </select>
+
+    <!--查找双方的聊天信息-->
+    <select id="findAllChatByUser" resultMap="ChatInfo">
+        <include refid="common_sql"/>
+        <where>
+            <if test="receive != null and receive.userName != null and receive.userName != ''">
+                b.username = #{receive.userName}
+            </if>
+            <if test="chatTime != null">
+                AND chattime = #{chatTime}
+            </if>
+            <if test="send != null">
+                AND a.userid = #{send.userId}
+            </if>
+            <if test="receive != null">
+                AND b.userid = #{receive.userId}
+            </if>
+        </where>
+    </select>
+
+    <!--查找数量-->
+    <select id="findAllChatCount">
+        SELECT
+        pt_chat.chattime,
+        count(*) as chatreceive,
+        b.userid as userid1,
+        b.username as username1
+        FROM chat
+        LEFT JOIN pt_user a ON a.userid = pt_chat.chatsend
+        LEFT JOIN pt_user b ON b.userid = pt_chat.chatreceive
+        GROUP BY b.userid
+    </select>
+
+    <!--插入聊天信息-->
+    <insert id="insertChat">
+        INSERT INTO pt_chat(chat.chatsend,chat.chatreceive,chat.chattime,chat.chatcontent)
+        VALUES(#{chatSend},#{chatReceive},NOW(),#{chatContent})
+    </insert>
 </mapper>

@@ -1,9 +1,17 @@
 package com.project.controller;
 
+import com.project.util.CreateVerifiCodeImage;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 
 /**
  * @program: car
@@ -15,6 +23,29 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("sys")
 @Controller
 public class SystemController {
+
+    /**
+     * @description: 获取并显示验证码图片
+     * @param: request
+     * @param: response
+     * @date: 2019-06-09 6:34 PM
+     * @return: void
+     */
+    @GetMapping("/getVerifiCodeImage")
+    public void getVerifiCodeImage(HttpServletRequest request, HttpServletResponse response) {
+        // 验证码图片
+        BufferedImage verifiCodeImage = CreateVerifiCodeImage.getVerifiCodeImage();
+        // 验证码
+        String verifiCode = String.valueOf(CreateVerifiCodeImage.getVerifiCode());
+        // 将验证码图片输出到登录页面
+        try {
+            ImageIO.write(verifiCodeImage, "JPEG", response.getOutputStream());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        // 存储验证码Session
+        request.getSession().setAttribute("verifiCode", verifiCode);
+    }
 
     /**
      * @description: 跳转到用户登录页面

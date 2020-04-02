@@ -33,6 +33,10 @@
         </mvc:interceptor>
     </mvc:interceptors>
 
+    <bean class="com.project.common.RestApiConfig" />
+
+    <mvc:resources mapping="swagger-ui.html" location="classpath:/META-INF/resources/" />
+
     <!-- 配置文件上传解析器 -->
     <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
         <!-- 指定请求编码格式 -->

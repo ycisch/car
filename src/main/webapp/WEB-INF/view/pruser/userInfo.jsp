@@ -35,6 +35,17 @@
         $(function () {
             var table;
 
+            // $.ajax({
+            //     type: 'POST',
+            //     dataType : 'json',
+            //     url: url,
+            //     data: param,
+            //     success: function(json){
+            //         ajaxLoadEnd();
+            //         createAll(json.Data);
+            //     }
+            // });
+
             $("#editDialog").dialog("open");//打开添加窗口
 
 
@@ -118,11 +129,6 @@
 </head>
 <body>
 
-<!-- 工具栏 -->
-<div id="toolbar">
-    <div style="float: left;"><a id="edit" href="javascript:" class="easyui-linkbutton"
-                                 data-options="iconCls:'icon-edit',plain:true">修改</a></div>
-</div>
 
 <!-- 修改信息窗口 -->
 <div id="editDialog" style="padding: 20px 0 0 65px">
@@ -132,7 +138,7 @@
             <tr>
                 <td>姓：</td>
                 <td colspan="1">
-                    <input value="${userInfo.userFristName}" id="edit_userFirstName" style="width: 200px; height: 30px;" class="easyui-textbox"
+                    <input value="${userInfo.userFirstName}" id="edit_userFirstName" style="width: 200px; height: 30px;" class="easyui-textbox"
                            type="text" name="userFirstName" data-options="required:true, missingMessage:'请填写姓~'"/>
                 </td>
             </tr>
@@ -168,13 +174,15 @@
                            type="text" name="userPassword" data-options="required:true, missingMessage:'请填写密码哟~'"/>
                 </td>
             </tr>
+            <tr>
+                <td colspan="1">
+                    <input value="修改" type="submit"/>
+                </td>
+            </tr>
         </table>
     </form>
 </div>
 
-<!-- 表单处理 -->
-<%----%>
-<iframe id="photo_target" name="photo_target" onload="uploaded(this)"></iframe>
 <script>
     $('#demo-1').fdatepicker();
     $('#demo-2').fdatepicker({

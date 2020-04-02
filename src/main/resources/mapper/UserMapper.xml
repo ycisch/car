@@ -4,73 +4,71 @@
 
 
     <resultMap id="UserInfoMapper" type="com.project.model.User">
-        <id property="userId" column="user_id"/>
-        <result property="userType" column="user_type"/>
-        <result property="userName" column="user_name"/>
-        <result property="userPassword" column="user_password"/>
-        <result property="userUserName" column="user_username"/>
+        <id property="userId" column="userid"/>
+        <result property="userFirstName" column="userfirstname"/>
+        <result property="userLastName" column="userlastname"/>
+        <result property="userName" column="username"/>
+        <result property="userSex" column="usersex"/>
+        <result property="userPhone" column="userphone"/>
+        <result property="userPassword" column="userpassword"/>
     </resultMap>
 
     <!--登陆-->
     <select id="userLogin" resultMap="UserInfoMapper">
-        SELECT * FROM truck_user
+        SELECT * FROM pt_user
         <where>
             <if test="username != '' and username != null">
-                user_username = #{username}
+                userphone = #{username}
             </if>
             <if test="password != '' and password != null">
-                AND user_password = #{password}
-            </if>
-            <if test="userType != '' and userType != null">
-                AND user_type = #{userType}
+                AND userpassword = #{password}
             </if>
         </where>
     </select>
 
     <!--插入-->
     <insert id="addUser">
-        INSERT INTO truck_user(user_type,user_name,user_username,user_password)
+        INSERT INTO pt_user(userfirstname,userlastname,username,usersex,userphone,userpassword)
         VALUES
-        (#{userType},#{userName},#{userUserName},#{userPassword})
+        (#{userFirstName},#{userLastName},#{userName},#{userSex},#{userPhone},#{userPassword})
     </insert>
 
 
     <!--查询-->
     <select id="findAllUser" resultMap="UserInfoMapper">
-        SELECT * FROM truck_user
+        SELECT * FROM pt_user
         <where>
-            user_type = 2
             <if test="userName != null and userName != ''">
-                AND user_name LIKE concat(concat('%',#{userName}),'%')
+                AND username LIKE concat(concat('%',#{userName}),'%')
             </if>
         </where>
     </select>
 
     <!--修改-->
     <update id="updateUser">
-        UPDATE truck_user
+        UPDATE pt_user
         <set>
-            <if test="userType != null and userType != ''">
-                user_type = #{userType},
+            <if test="userFirstName != null and userFirstName != ''">
+                userfirstname = #{userFirstName},
+            </if>
+            <if test="userLastName != null and userLastName != ''">
+                userlastname = #{userLastName},
             </if>
             <if test="userName != null and userName != ''">
-                user_name = #{userName},
-            </if>
-            <if test="userUserName != null and userUserName != ''">
-                user_username = #{userUserName},
+                username = #{userName},
             </if>
             <if test="userPassword != null and userPassword != ''">
-                user_password = #{userPassword}
+                userpassword = #{userPassword}
             </if>
         </set>
         <where>
-            user_id = #{userId}
+            userid = #{userId}
         </where>
     </update>
 
     <!--删除-->
     <delete id="deleteUser">
-        DELETE FROM truck_user WHERE user_id =
+        DELETE FROM pt_user WHERE userid =
         <foreach collection="array" item="ids" open="(" separator="," close=")">
             #{ids}
         </foreach>

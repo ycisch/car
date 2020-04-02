@@ -26,7 +26,7 @@ public class Record {
 
     private Float recordFare;
 
-    private Float recordStatus;
+    private String recordStatus;
 
     private User user;
 
@@ -122,11 +122,11 @@ public class Record {
         this.recordFare = recordFare;
     }
 
-    public Float getRecordStatus() {
+    public String getRecordStatus() {
         return recordStatus;
     }
 
-    public void setRecordStatus(Float recordStatus) {
+    public void setRecordStatus(String recordStatus) {
         this.recordStatus = recordStatus;
     }
 
@@ -146,7 +146,7 @@ public class Record {
         this.driver = driver;
     }
 
-    public Record(Integer recordId, String recordType, String recordStart, String recordEnd, Integer driverId, Integer userId, Date createTime, Date endTime, Float recordFare, Float recordStatus, User user, Driver driver) {
+    public Record(Integer recordId, String recordType, String recordStart, String recordEnd, Integer driverId, Integer userId, Date createTime, Date endTime, Float recordFare, String recordStatus, User user, Driver driver) {
         this.recordId = recordId;
         this.recordType = recordType;
         this.recordStart = recordStart;

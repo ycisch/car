@@ -43,12 +43,12 @@
                 fit: true,//自动大小
                 height: 300,
                 method: "post",
-                url: "findAllUser",
-                idField: 'carId',
+                url: "../user/findAllUser",
+                idField: 'userId',
                 singleSelect: false,//是否单选
                 rownumbers: true,//行号
                 pagination: true,//分页控件
-                sortName: 'carId',
+                sortName: 'userId',
                 sortOrder: 'DESC',
                 remoteSort: false,
                 columns: [[
@@ -59,7 +59,7 @@
                             return (a > b ? -1 : 1)
                         }
                     },
-                    {field: 'userFristName', title: '名称', width: 150,hidden:true},
+                    {field: 'userFirstName', title: '名称', width: 150,hidden:true},
                     {field: 'userLastName', title: '名称', width: 150,hidden:true},
                     {field: 'userName', title: '名称', width: 150},
                     {field: 'userSex', title: '性别', width: 150},
@@ -112,7 +112,7 @@
                         if (r) {
                             $.ajax({
                                 type: "post",
-                                url: "deleteUser",
+                                url: "../user/deleteUser",
                                 data: {ids: ids},
                                 dataType: 'json',
                                 success: function (data) {
@@ -155,7 +155,7 @@
                                 var data = $("#addForm").serialize();//序列化表单信息
                                 $.ajax({
                                     type: "post",
-                                    url: "addUser",
+                                    url: "../user/addUser",
                                     data: data,
                                     dataType: 'json',
                                     success: function (data) {
@@ -212,7 +212,7 @@
                                 debugger;
                                 $.ajax({
                                     type: "post",
-                                    url: "editUser",
+                                    url: "../user/editUser",
                                     data: data,
                                     dataType: 'json',
                                     success: function (data) {
