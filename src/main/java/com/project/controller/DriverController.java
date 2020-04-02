@@ -2,7 +2,9 @@ package com.project.controller;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.project.common.CalculateDistance;
 import com.project.model.Driver;
+import com.project.model.User;
 import com.project.service.DriverService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -105,7 +108,7 @@ public class DriverController {
     }
 
     /**
-     *@Description: 查询司机档案
+     *@Description: 查询司机
      *@Param: [driver]
      *@return: java.util.Map<java.lang.String,java.lang.Object>
      *@Author: Administrator
@@ -129,4 +132,32 @@ public class DriverController {
         result.put("rows", noticeList);
         return result;
     }
+
+//    /**
+//    *@Description: 查找附近司机
+//    *@Param: [page, rows, driver]
+//    *@return: java.util.Map<java.lang.String,java.lang.Object>
+//    *@Author: Administrator
+//    *@date: 2020/4/2
+//    */
+//    public Map<String,Object>findDriverByDistance(Integer page, Integer rows, Driver driver, HttpServletRequest request){
+//
+//        User user = ((User) request.getSession().getAttribute("userInfo"));
+//        PageHelper.startPage(page, rows);
+//        CalculateDistance calculateDistance = new CalculateDistance();
+//        List<Driver> list = driverService.findAllDriver(driver);
+//        for (int i = 0;i<list.size();i++){
+//            Driver driver1 = list.get(i);
+//            double distance = calculateDistance.getDistance(user, driver1);
+//            driver1.setDistance((float)distance);
+//            driverService.updateDriver(driver1);
+//        }
+//
+//        PageInfo<Driver> pageInfo = new PageInfo<>(list);
+//        long total = pageInfo.getTotal();
+//        List<Driver> driverList = pageInfo.getList();
+//        result.put("rows", driverList);
+//        result.put("total", total);
+//        return result;
+//    }
 }

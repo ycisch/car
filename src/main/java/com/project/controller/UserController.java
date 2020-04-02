@@ -2,6 +2,7 @@ package com.project.controller;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.project.common.CalculateDistance;
 import com.project.model.Admin;
 import com.project.model.Driver;
 import com.project.model.LoginForm;
@@ -182,6 +183,30 @@ public class UserController {
             result.put("msg", "添加失败! (ಥ_ಥ)服务器端发生异常!");
         }
         return result;
+    }
+
+
+
+
+    @RequestMapping("addPosition")
+    public String addPosition(String lng, String lat,String site,HttpServletRequest request){
+
+        User user = (User) request.getSession().getAttribute("userInfo");
+        user.setUserPosition(lng+","+lat);
+        user.setCoordinate(site);
+        request.setAttribute("userInfo",user);
+        Driver driver = new Driver();
+        List<Driver> list = driverService.findAllDriver(driver);
+        CalculateDistance calculateDistance = new CalculateDistance();
+        for (int i = 0;i<list.size();i++){
+            Driver driver1 = list.get(i);
+            double distance = calculateDistance.getDistance(user, driver1);
+            driver1.setDistance((float)distance);
+            driverService.updateDriver(driver1);
+        }
+
+
+        return "common/success";
     }
 
     @ResponseBody

@@ -2,6 +2,7 @@ package com.project.service.impl;
 
 import com.project.mapper.DriverMapper;
 import com.project.model.Driver;
+import com.project.model.User;
 import com.project.service.DriverService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,6 +40,9 @@ public class DriverServiceImpl implements DriverService {
     public int deleteDriver(Integer[] ids) {
         return driverMapper.deleteDriver(ids);
     }
+
+    @Override
+    public List<Driver> findDriverByDistance(User user) { return driverMapper.findDriverByDistance(user); }
 
 //    @Override
 //    public int deleteDriverOrderInfo(Integer[] ids) {

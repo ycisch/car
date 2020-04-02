@@ -58,6 +58,9 @@
             <if test=" carNum !=null and  carNum !='' ">
                 carnum = #{carNum}
             </if>
+            <if test=" distance !=null and  distance !='' ">
+                distance = #{distance}
+            </if>
         </set>
         where driverid = #{driverId}
     </update>
@@ -84,7 +87,16 @@
             <if test=" carColor !=null and  carColor !=''">
                 AND carcolor = #{carColor}
             </if>
-
+            <if test=" carStatus !=null and  carStatus !=''">
+                AND carstatus = #{carStatus}
+            </if>
+            <if test="distance != null and distance !=''">
+                AND distance &lt;= #{distance}
+            </if>
         </where>
     </select>
+
+<!--    <select id="findDriverByDistance" resultMap="driverResultMapper">-->
+<!--        select *-->
+<!--    </select>-->
 </mapper>

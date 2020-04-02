@@ -1,6 +1,7 @@
 package com.project.service;
 
 import com.project.model.Driver;
+import com.project.model.User;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -50,6 +51,14 @@ public interface DriverService {
      */
     int deleteDriver(Integer[] ids);
 
+    /**
+     *@Description: 查找附件车辆
+     *@Param: [user]
+     *@return: java.util.List<com.project.model.Driver>
+     *@Author: Administrator
+     *@date: 2020/4/2
+     */
+    List<Driver> findDriverByDistance(User user);
 //    /**
 //     *@Description: 删除司机订单信息
 //     *@Param: [ids]

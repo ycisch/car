@@ -1,6 +1,7 @@
 package com.project.mapper;
 
 import com.project.model.Driver;
+import com.project.model.User;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -49,6 +50,15 @@ public interface DriverMapper {
     *@date: 2020/3/30
     */
     int deleteDriver(Integer[] ids);
+
+    /**
+    *@Description: 查找附件车辆
+    *@Param: [user]
+    *@return: java.util.List<com.project.model.Driver>
+    *@Author: Administrator
+    *@date: 2020/4/2
+    */
+    List<Driver> findDriverByDistance(User user);
 
 //    /**
 //    *@Description: 删除司机订单信息
