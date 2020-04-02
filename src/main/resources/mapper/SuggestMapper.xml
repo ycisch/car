@@ -2,4 +2,34 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.project.mapper.SuggestMapper">
 
+    <!--  建议映射 -->
+    <resultMap id="messageResultMapper" type="com.project.model.Suggest">
+        <id property="messageId" column="messageId"/>
+        <result property="messageTime" column="messageTime"/>
+        <result property="messageContent" column="messageContent"/>
+        <association property="user" resultMap="userResultMapper"/>
+        <association property="driver" resultMap="DriverResultMapper"/>
+    </resultMap>
+    <!-- 顾客映射 -->
+    <resultMap id="messageResultMapper" type="com.project.model.User">
+        <id property="userId" column="userid"/>
+        <result property="userFirstName" column="userfirstname"/>
+        <result property="userLastName" column="userlastname"/>
+        <result property="userName" column="username"/>
+        <result property="userSex" column="usersex"/>
+        <result property="userPhone" column="userphone"/>
+        <result property="userPassword" column="userpassword"/>
+    </resultMap>
+    <!-- 司机映射 -->
+    <resultMap id="messageResultMapper" type="com.project.model.Driver">
+        <id property="driverId" column="driverid"></id>
+        <result property="driverFirstName" column="driverfirstName"></result>
+        <result property="driverLastName" column="driverlastName"></result>
+        <result property="driverName" column="drivername"></result>
+        <result property="driverSex" column="driversex"></result>
+        <result property="driverPhone" column="driverphone"></result>
+        <result property="driverPassword" column="driverpassword"></result>
+    </resultMap>
+
+
 </mapper>

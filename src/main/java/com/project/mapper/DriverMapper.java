@@ -50,22 +50,13 @@ public interface DriverMapper {
     */
     int deleteDriver(Integer[] ids);
 
-    /**
-    *@Description: 删除司机订单信息
-    *@Param: [ids]
-    *@return: int
-    *@Author: Administrator
-    *@date: 2020/3/30
-    */
-    int deleteDriverOrderInfo(Integer[] ids);
+//    /**
+//    *@Description: 删除司机订单信息
+//    *@Param: [ids]
+//    *@return: int
+//    *@Author: Administrator
+//    *@date: 2020/3/30
+//    */
+//    int deleteDriverOrderInfo(Integer[] ids);
 
-    /**
-    *@Description: 删除司机记录信息
-    *@Param: [ids]
-    *@return: int
-    *@Author: Administrator
-    *@date: 2020/3/30
-    */
-    int deleteDriverRecordInfo(Integer[] ids);
-    
 }

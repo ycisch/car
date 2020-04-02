@@ -2,4 +2,87 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.project.mapper.DriverMapper">
 
+    <!-- 司机映射 -->
+    <resultMap id="driverResultMapper" type="com.project.model.Driver">
+        <id property="driverId" column="driverid"></id>
+        <result property="driverFirstName" column="driverfirstName"></result>
+        <result property="driverLastName" column="driverlastName"></result>
+        <result property="driverName" column="drivername"></result>
+        <result property="driverSex" column="driversex"></result>
+        <result property="driverPhone" column="driverphone"></result>
+        <result property="driverPassword" column="driverpassword"></result>
+        <result property="driverCardid" column="drivercardid"></result>
+        <result property="carId" column="carid"></result>
+        <result property="carType" column="cartype"></result>
+        <result property="carColor" column="carcolor"></result>
+        <result property="carSeat" column="carseat"></result>
+        <result property="carStatus" column="carstatus"></result>
+        <result property="carPosition" column="carposition"></result>
+        <result property="carNum" column="carnum"></result>
+        <result property="distance" column="distance"></result>
+        <result property="carScore" column="carScore"></result>
+    </resultMap>
+
+    <!-- 添加司机 -->
+    <insert id="insertDriver" parameterType="com.project.model.Driver">
+        insert into pt_driver(driverfirstName,driverlastName,drivername,driversex,driverphone,driverpassword,drivercardid,cartype,carcolor,carseat,carstatus,carposition,carnum)
+        value (#{driverFirstName},#{driverLastName},#{driverName},#{driverSex},#{driverPhone},#{driverCardid},#{carType},#{carColor},#{carSeat},#{carStatus},#{carPosition},#{carNum},)
+    </insert>
+
+    <!-- 删除司机 -->
+    <delete id="deleteDriver" parameterType="com.project.model.Driver">
+        DELETE  FROM pt_driver WHERE driverId IN
+        <foreach collection="array" item="ids" open="(" separator="," close=")">
+            #{ids}
+        </foreach>
+    </delete>
+
+    <!-- 修改司机 -->
+    <update id="updateDriver" parameterType="com.project.model.Driver">
+        update pt_driver
+        <set>
+            <if test=" driverPhone !=null and  driverPhone !='' ">
+                driverphone = #{driverPhone},
+            </if>
+            <if test=" driverPassword !=null and  driverPassword !='' ">
+                driverpassword = #{driverPassword},
+            </if>
+            <if test=" carStatus !=null and  carStatus !='' ">
+                carstatus = #{carStatus},
+            </if>
+            <if test=" carPosition !=null and  carPosition !='' ">
+                carposition = #{carPosition},
+            </if>
+            <if test=" carNum !=null and  carNum !='' ">
+                carnum = #{carNum}
+            </if>
+        </set>
+        where driverid = #{driverId}
+    </update>
+
+    <!-- 查询司机 -->
+    <select id="findAllDriver" resultMap="driverResultMapper">
+        select * from pt_driver
+        <where>
+            <if test=" driverName !=null and  driverName !=''">
+                drivername  LIKE concat(concat('%',#{driverName}),'%')
+            </if>
+            <if test=" driverSex !=null and  driverSex !=''">
+                AND driversex = #{driverSex}
+            </if>
+            <if test=" driverPhone !=null and  driverPhone!=''">
+                AND driverphone = #{driverPhone}
+            </if>
+            <if test=" driverCardid !=null and  driverCardid !=''">
+                AND drivercardid = #{driverCardid}
+            </if>
+            <if test=" carType !=null and  carType !=''">
+                AND caryype = #{carType}
+            </if>
+            <if test=" carColor !=null and  carColor !=''">
+                AND carcolor = #{carColor}
+            </if>
+
+        </where>
+    </select>
 </mapper>

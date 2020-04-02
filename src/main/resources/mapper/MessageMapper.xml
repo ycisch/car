@@ -1,5 +1,80 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.project.mapper.MessageMapper">
+    <!-- 留言映射 -->
+    <resultMap id="messageResultMapper" type="com.project.model.Message">
+        <id property="messageId" column="messageid"/>
+        <result property="messageTime" column="messagetime"/>
+        <result property="messageContent" column="messagecontent"/>
+        <association property="user" resultMap="userResultMapper"/>
+        <association property="driver" resultMap="DriverResultMapper"/>
+    </resultMap>
+    <!-- 顾客映射 -->
+    <resultMap id="messageResultMapper" type="com.project.model.User">
+        <id property="userId" column="userid"/>
+        <result property="userFirstName" column="userfirstname"/>
+        <result property="userLastName" column="userlastname"/>
+        <result property="userName" column="username"/>
+        <result property="userSex" column="usersex"/>
+        <result property="userPhone" column="userphone"/>
+        <result property="userPassword" column="userpassword"/>
+    </resultMap>
+    <!-- 司机映射 -->
+    <resultMap id="messageResultMapper" type="com.project.model.Driver">
+        <id property="driverId" column="driverid"></id>
+        <result property="driverFirstName" column="driverfirstName"></result>
+        <result property="driverLastName" column="driverlastName"></result>
+        <result property="driverName" column="drivername"></result>
+        <result property="driverSex" column="driversex"></result>
+        <result property="driverPhone" column="driverphone"></result>
+        <result property="driverPassword" column="driverpassword"></result>
+    </resultMap>
+
+    <!-- 添加留言 -->
+    <insert id="insertMessage" >
+        insert into pt_message(messagetime,messagecontent,userid,driverid)
+        value (NOW(),#{messageContent},#{user.userid},#{driver.driverid})
+    </insert>
+
+    <!-- 删除留言 -->
+    <delete id="deleteMessage" parameterType="com.project.model.Message">
+        DELETE  FROM pt_driver WHERE driverId IN
+        <foreach collection="array" item="ids" open="(" separator="," close=")">
+            #{ids}
+        </foreach>
+    </delete>
+
+    <!-- 查询留言 -->
+    <select id="findAllMessage" resultMap="messageResultMapper">
+        select pt_message.messagetime,
+        pt_message.messagecontent,
+        pt_user.userid,
+        pt_user.username,
+        pt_driver.driverid,
+        pr_driver.drivername,
+        from pt_message
+        LEFT JOIN  pt_user ON pt_message.userid = pt_user.userid
+        LEFT JOIN  pt_driver ON pt_message.driverid = pt_driver.driverid
+        <where>
+            <if test="user.userName !=null and user.userName !=''">
+                pt_user.username  LIKE concat(concat('%',#{user.userName}),'%')
+            </if>
+            <if test="driver.driverName !=null and driver.driverName !=''">
+                AND pt_driver.drivername  LIKE concat(concat('%',#{driver.driverName}),'%')
+            </if>
+        </where>
+    </select>
+
+    <!-- 修改留言 -->
+    <update id="updateMessage" parameterType="com.project.model.Message">
+        update pt_message
+        <set>
+            <if test="messageContent != null and messageContent !=''">
+                messagecontent = #{messageContent}
+            </if>
+        </set>
+        where messageid = #{messageId}
+    </update>
+
 
 </mapper>
