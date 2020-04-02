@@ -41,12 +41,5 @@ public class DriverServiceImpl implements DriverService {
         return driverMapper.deleteDriver(ids);
     }
 
-    @Override
-    public List<Driver> findDriverByDistance(User user) { return driverMapper.findDriverByDistance(user); }
-
-//    @Override
-//    public int deleteDriverOrderInfo(Integer[] ids) {
-//        return driverMapper.deleteDriverOrderInfo(ids);
-//    }
 
 }

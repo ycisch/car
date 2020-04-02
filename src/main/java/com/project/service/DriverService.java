@@ -51,21 +51,5 @@ public interface DriverService {
      */
     int deleteDriver(Integer[] ids);
 
-    /**
-     *@Description: 查找附件车辆
-     *@Param: [user]
-     *@return: java.util.List<com.project.model.Driver>
-     *@Author: Administrator
-     *@date: 2020/4/2
-     */
-    List<Driver> findDriverByDistance(User user);
-//    /**
-//     *@Description: 删除司机订单信息
-//     *@Param: [ids]
-//     *@return: int
-//     *@Author: Administrator
-//     *@date: 2020/3/30
-//     */
-//    int deleteDriverOrderInfo(Integer[] ids);
 
 }

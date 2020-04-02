@@ -96,7 +96,4 @@
         </where>
     </select>
 
-<!--    <select id="findDriverByDistance" resultMap="driverResultMapper">-->
-<!--        select *-->
-<!--    </select>-->
 </mapper>
