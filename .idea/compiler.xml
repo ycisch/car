@@ -7,7 +7,6 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="carProject" />
-        <module name="SSM-Car" />
       </profile>
     </annotationProcessing>
   </component>

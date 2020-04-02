@@ -23,7 +23,7 @@
     <!-- 添加需求 -->
     <insert id="insertDemand" parameterType="com.project.model.Demand">
         insert into pt_demand(userid,demandcontent,demandtime)
-        value (#{user.userid},#{demandContent},NOW())
+        value (#{user.userId},#{demandContent},NOW())
     </insert>
 
     <!-- 查询所有需求 -->

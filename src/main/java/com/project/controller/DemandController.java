@@ -9,6 +9,7 @@ import com.project.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -40,6 +41,7 @@ public class DemandController {
     *@Author: Administrator
     *@date: 2020/3/31
     */
+    @ResponseBody
     @RequestMapping("goDemandList")
     public ModelAndView goDemandList(ModelAndView modelAndView){
         modelAndView.setViewName("demand/DemandList");
@@ -53,6 +55,7 @@ public class DemandController {
     *@Author: Administrator
     *@date: 2020/3/31
     */
+    @ResponseBody
     @RequestMapping("getDemandList")
     public Map<String, Object> getDemandList(Integer page, Integer rows,Demand demand){
 
@@ -75,9 +78,10 @@ public class DemandController {
     *@Author: Administrator
     *@date: 2020/3/31
     */
+    @ResponseBody
     @RequestMapping("addDemand")
     public Map<String, Object> addDemand(Demand demand, HttpServletRequest request){
-        demand.setUser((User)request.getSession().getAttribute("userInfo"));
+//        demand.setUser((User)request.getSession().getAttribute("userInfo"));
         if(demandService.insertDemand(demand) > 0 ){
             result.put("Success" ,true);
         }else{

@@ -3,15 +3,15 @@
 <mapper namespace="com.project.mapper.SuggestMapper">
 
     <!--  建议映射 -->
-    <resultMap id="messageResultMapper" type="com.project.model.Suggest">
-        <id property="messageId" column="messageId"/>
-        <result property="messageTime" column="messageTime"/>
-        <result property="messageContent" column="messageContent"/>
+    <resultMap id="suggestResultMapper" type="com.project.model.Suggest">
+        <id property="suggestId" column="suggestid"/>
+        <result property="suggestTime" column="suggesttime"/>
+        <result property="suggestContent" column="suggestcontent"/>
         <association property="user" resultMap="userResultMapper"/>
-        <association property="driver" resultMap="DriverResultMapper"/>
+        <association property="driver" resultMap="driverResultMapper"/>
     </resultMap>
     <!-- 顾客映射 -->
-    <resultMap id="messageResultMapper" type="com.project.model.User">
+    <resultMap id="userResultMapper" type="com.project.model.User">
         <id property="userId" column="userid"/>
         <result property="userFirstName" column="userfirstname"/>
         <result property="userLastName" column="userlastname"/>
@@ -21,7 +21,7 @@
         <result property="userPassword" column="userpassword"/>
     </resultMap>
     <!-- 司机映射 -->
-    <resultMap id="messageResultMapper" type="com.project.model.Driver">
+    <resultMap id="driverResultMapper" type="com.project.model.Driver">
         <id property="driverId" column="driverid"></id>
         <result property="driverFirstName" column="driverfirstName"></result>
         <result property="driverLastName" column="driverlastName"></result>
@@ -30,6 +30,52 @@
         <result property="driverPhone" column="driverphone"></result>
         <result property="driverPassword" column="driverpassword"></result>
     </resultMap>
+
+    <!-- 添加建议 -->
+    <insert id="insertSuggest" >
+        insert into pt_suggest(suggestcontent,userid,driverid)
+        value (#{suggestContent},#{user.userId},#{driver.driverId})
+    </insert>
+
+    <!-- 删除建议 -->
+    <delete id="deleteSuggest">
+        DELETE  FROM pt_suggest WHERE suggestId IN
+        <foreach collection="array" item="ids" open="(" separator="," close=")">
+            #{ids}
+        </foreach>
+    </delete>
+
+    <!-- 查询建议 -->
+    <select id="findAllSuggest" resultMap="suggestResultMapper">
+        select
+        pt_suggest.suggestcontent,
+        pt_user.userid,
+        pt_user.username,
+        pt_driver.driverid,
+        pt_driver.drivername
+        from pt_suggest
+        LEFT JOIN  pt_user ON pt_suggest.userid = pt_user.userid
+        LEFT JOIN  pt_driver ON pt_suggest.driverid = pt_driver.driverid
+        <where>
+            <if test="user != null and user !='' and user.userName !=null and user.userName !=''">
+                pt_user.username  LIKE concat(concat('%',#{user.userName}),'%')
+            </if>
+            <if test="driver != null and driver !='' and driver.driverName !=null and driver.driverName !=''">
+                AND pt_driver.drivername  LIKE concat(concat('%',#{driver.driverName}),'%')
+            </if>
+        </where>
+    </select>
+
+    <!-- 修改建议 -->
+    <update id="updateSuggest" parameterType="com.project.model.Suggest">
+        update pt_suggest
+        <set>
+            <if test="suggestContent != null and suggestContent !=''">
+                suggestcontent = #{suggestContent}
+            </if>
+        </set>
+        where suggestid = #{suggestId}
+    </update>
 
 
 </mapper>

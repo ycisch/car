@@ -7,10 +7,10 @@
         <result property="messageTime" column="messagetime"/>
         <result property="messageContent" column="messagecontent"/>
         <association property="user" resultMap="userResultMapper"/>
-        <association property="driver" resultMap="DriverResultMapper"/>
+        <association property="driver" resultMap="driverResultMapper"/>
     </resultMap>
     <!-- 顾客映射 -->
-    <resultMap id="messageResultMapper" type="com.project.model.User">
+    <resultMap id="userResultMapper" type="com.project.model.User">
         <id property="userId" column="userid"/>
         <result property="userFirstName" column="userfirstname"/>
         <result property="userLastName" column="userlastname"/>
@@ -20,7 +20,7 @@
         <result property="userPassword" column="userpassword"/>
     </resultMap>
     <!-- 司机映射 -->
-    <resultMap id="messageResultMapper" type="com.project.model.Driver">
+    <resultMap id="driverResultMapper" type="com.project.model.Driver">
         <id property="driverId" column="driverid"></id>
         <result property="driverFirstName" column="driverfirstName"></result>
         <result property="driverLastName" column="driverlastName"></result>
@@ -33,11 +33,11 @@
     <!-- 添加留言 -->
     <insert id="insertMessage" >
         insert into pt_message(messagetime,messagecontent,userid,driverid)
-        value (NOW(),#{messageContent},#{user.userid},#{driver.driverid})
+        value (NOW(),#{messageContent},#{user.userId},#{driver.driverId})
     </insert>
 
     <!-- 删除留言 -->
-    <delete id="deleteMessage" parameterType="com.project.model.Message">
+    <delete id="deleteMessage">
         DELETE  FROM pt_driver WHERE driverId IN
         <foreach collection="array" item="ids" open="(" separator="," close=")">
             #{ids}
@@ -51,15 +51,15 @@
         pt_user.userid,
         pt_user.username,
         pt_driver.driverid,
-        pr_driver.drivername,
+        pt_driver.drivername
         from pt_message
         LEFT JOIN  pt_user ON pt_message.userid = pt_user.userid
         LEFT JOIN  pt_driver ON pt_message.driverid = pt_driver.driverid
         <where>
-            <if test="user.userName !=null and user.userName !=''">
+            <if test="user != null and user !='' and user.userName !=null and user.userName !=''">
                 pt_user.username  LIKE concat(concat('%',#{user.userName}),'%')
             </if>
-            <if test="driver.driverName !=null and driver.driverName !=''">
+            <if test="driver != null and driver !='' and driver.driverName !=null and driver.driverName !=''">
                 AND pt_driver.drivername  LIKE concat(concat('%',#{driver.driverName}),'%')
             </if>
         </where>

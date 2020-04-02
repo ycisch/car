@@ -25,12 +25,14 @@
 
     <!-- 添加司机 -->
     <insert id="insertDriver" parameterType="com.project.model.Driver">
-        insert into pt_driver(driverfirstName,driverlastName,drivername,driversex,driverphone,driverpassword,drivercardid,cartype,carcolor,carseat,carstatus,carposition,carnum)
-        value (#{driverFirstName},#{driverLastName},#{driverName},#{driverSex},#{driverPhone},#{driverCardid},#{carType},#{carColor},#{carSeat},#{carStatus},#{carPosition},#{carNum},)
+        insert into pt_driver(driverfirstName,driverlastName,drivername,driversex,
+        driverphone,driverpassword,drivercardid,cartype,
+        carcolor,carseat,carstatus,carposition,carnum)
+        value (#{driverFirstName},#{driverLastName},#{driverName},#{driverSex},#{driverPhone},#{driverPassword},#{driverCardid},#{carType},#{carColor},#{carSeat},#{carStatus},#{carPosition},#{carNum})
     </insert>
 
     <!-- 删除司机 -->
-    <delete id="deleteDriver" parameterType="com.project.model.Driver">
+    <delete id="deleteDriver">
         DELETE  FROM pt_driver WHERE driverId IN
         <foreach collection="array" item="ids" open="(" separator="," close=")">
             #{ids}
