@@ -1,6 +1,7 @@
 package com.project.mapper;
 
 import com.project.model.Driver;
+import com.project.model.LoginForm;
 import com.project.model.User;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -58,6 +59,6 @@ public interface DriverMapper {
     *@Author: Administrator
     *@date: 2020/4/3
     */
-    Driver driverLogin(Driver driver);
+    Driver driverLogin(LoginForm loginForm);
 
 }

@@ -12,7 +12,7 @@
 <html>
 <head>
     <meta charset="UTF-8" content="#">
-    <title>汽车管理页面</title>
+    <title>留言管理页面</title>
     <!-- 引入CSS -->
     <link rel="stylesheet" type="text/css"
           href="${pageContext.request.contextPath}/static/easyui/themes/default/easyui.css">

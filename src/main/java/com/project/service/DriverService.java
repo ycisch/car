@@ -1,6 +1,7 @@
 package com.project.service;
 
 import com.project.model.Driver;
+import com.project.model.LoginForm;
 import com.project.model.User;
 import org.springframework.stereotype.Service;
 
@@ -58,5 +59,5 @@ public interface DriverService {
      *@Author: Administrator
      *@date: 2020/4/3
      */
-    Driver driverLogin(Driver driver);
+    Driver driverLogin(LoginForm loginForm);
 }

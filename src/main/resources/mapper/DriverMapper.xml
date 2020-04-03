@@ -43,6 +43,15 @@
     <update id="updateDriver" parameterType="com.project.model.Driver">
         update pt_driver
         <set>
+            <if test="driverFirstName != null and driverFirstName != ''">
+                driverfirstname = #{driverFirstName},
+            </if>
+            <if test="driverLastName != null and driverLastName != ''">
+                driverlastname = #{driverLastName},
+            </if>
+            <if test="driverName != null and driverName != ''">
+                drivername = #{driverName},
+            </if>
             <if test=" driverPhone !=null and  driverPhone !='' ">
                 driverphone = #{driverPhone},
             </if>
@@ -98,7 +107,15 @@
 
     <!--司机登陆 还是手机号来-->
     <select id="driverLogin" resultMap="driverResultMapper">
-
+            SELECT * FROM pt_driver
+            <where>
+                <if test="username != '' and username != null">
+                    driverphone = #{username}
+                </if>
+                <if test="password != '' and password != null">
+                    AND driverpassword = #{password}
+                </if>
+            </where>
     </select>
 
 </mapper>

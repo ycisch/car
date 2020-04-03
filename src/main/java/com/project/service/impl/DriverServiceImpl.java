@@ -2,6 +2,7 @@ package com.project.service.impl;
 
 import com.project.mapper.DriverMapper;
 import com.project.model.Driver;
+import com.project.model.LoginForm;
 import com.project.model.User;
 import com.project.service.DriverService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,8 +43,8 @@ public class DriverServiceImpl implements DriverService {
     }
 
     @Override
-    public Driver driverLogin(Driver driver) {
-        return driverMapper.driverLogin(driver);
+    public Driver driverLogin(LoginForm loginForm) {
+        return driverMapper.driverLogin(loginForm);
     }
 
 

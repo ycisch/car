@@ -47,7 +47,7 @@
                 idField: 'driverId',
                 singleSelect: false,//是否单选
                 rownumbers: true,//行号
-                pagination: true,//分页控件          wo 
+                pagination: true,//分页控件
                 sortName: 'driverId',
                 sortOrder: 'DESC',
                 remoteSort: false,

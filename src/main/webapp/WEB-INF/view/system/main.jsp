@@ -170,32 +170,32 @@
                             "menuid": "33",
                             "menuname": "个人信息修改",
                             "icon": "icon-settings",
-                            "url": "../info/goInfoView"
+                            "url": "../sys/driverInfo"
                         },
                         {
                             "menuid": "34",
                             "menuname": "查看出行记录",
                             "icon": "icon-settings",
-                            "url": "../info/goInfoView1"
+                            "url": "../sys/recordList"
                         },
                         {
                             "menuid": "35",
                             "menuname": "查看留言",
                             "icon": "icon-settings",
-                            "url": "../info/goInfoView1"
+                            "url": "../sys/messageList"
                         },
                         {
                             "menuid": "36",
                             "menuname": "查看个人信息",
                             "icon": "icon-settings",
-                            "url": "../info/goInfoView1"
+                            "url": "../sys/driverList"
                         },
-                        {
-                            "menuid": "37",
-                            "menuname": "平台打分",
-                            "icon": "icon-settings",
-                            "url": "../info/goInfoView1"
-                        }
+                        // {
+                        //     "menuid": "37",
+                        //     "menuname": "平台打分",
+                        //     "icon": "icon-settings",
+                        //     "url": "../sys/goInfoView1"
+                        // }
                     ]
                 }
                 </c:if>
@@ -216,14 +216,14 @@
         		<c:choose>
                     <c:when test="${userType==1 }">管理员 : </c:when>
                     <c:when test="${userType==2 }">顾客 : </c:when>
-                    <c:when test="${userType==2 }">车主 : </c:when>
+                    <c:when test="${userType==3 }">车主 : </c:when>
                 </c:choose>
         	</span>
             <%-- 从Session中获取登录用户的用户名	--%>
         	<span style="color:red; font-weight:bold;">
                 <c:if test="${userType == 1}">${adminInfo.adminName}</c:if>
                 <c:if test="${userType == 2}">${userInfo.userName}</c:if>
-                <c:if test="${userType == 3}">${userInfo.userName}</c:if>
+                <c:if test="${userType == 3}">${userInfo.driverName}</c:if>
             </span>
             &nbsp;&nbsp;&nbsp;&nbsp;
         	<a href="loginOut" id="loginOut" style="color: darkgrey;" class="easyui-linkbutton"

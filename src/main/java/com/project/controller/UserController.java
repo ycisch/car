@@ -97,6 +97,14 @@ public class UserController {
                     return result;
                 }
             }else{
+                Driver driver = driverService.driverLogin(loginForm);
+                if (driver != null) {
+                    HttpSession session = request.getSession(); //将用户信息存储到Session
+                    session.setAttribute("userInfo", driver);
+                    session.setAttribute("userType", loginForm.getUserType());
+                    result.put("success", true);
+                    return result;
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
