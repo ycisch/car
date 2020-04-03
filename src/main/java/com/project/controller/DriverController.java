@@ -24,7 +24,7 @@ import java.util.Map;
  * @author: Administrator
  * @create: 2020-03-31 21:12
  */
-@RequestMapping("Driver")
+@RequestMapping("driver")
 @Controller
 public class DriverController {
 

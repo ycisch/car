@@ -41,5 +41,10 @@ public class DriverServiceImpl implements DriverService {
         return driverMapper.deleteDriver(ids);
     }
 
+    @Override
+    public Driver driverLogin(Driver driver) {
+        return driverMapper.driverLogin(driver);
+    }
+
 
 }

@@ -43,50 +43,35 @@
                 fit: true,//自动大小
                 height: 300,
                 method: "post",
-                url: "getCarList",
-                idField: 'carId',
+                url: "../driver/getDriverList",
+                idField: 'driverId',
                 singleSelect: false,//是否单选
                 rownumbers: true,//行号
-                pagination: true,//分页控件
-                sortName: 'carId',
+                pagination: true,//分页控件          wo 
+                sortName: 'driverId',
                 sortOrder: 'DESC',
                 remoteSort: false,
                 columns: [[
                     {field: 'chk', checkbox: true, width: 50},
                     {
-                        field: 'carId', title: 'ID', width: 50, sortable: true,
+                        field: 'driverId', title: 'ID', width: 50, sortable: true,
                         sorter: function (a, b) {
                             return (a > b ? -1 : 1)
                         }
                     },
-                    {field: 'carName', title: '车名', width: 150},
-                    {field: 'carLicense', title: '牌照', width: 150},
-                    {field: 'carType', title: '类型 ', width: 150},
-                    {field: 'carTonnage', title: '吨位', width: 150},
-                    {field: 'carCount', title: '出车次数', width: 150},
-                    {field: 'carPerformance', title: '汽车性能', width: 150},
-                    {
-                        field: 'order.orderId', title: '订单号',
-                        formatter: function (value, row, index) {
-                            if (row.order) {
-                                return row.order.orderId;
-                            } else {
-                                return "暂无";
-                            }
-                        },
-                        width: 90
-                    },
-                    {
-                        field: 'driver.driverName', title: '司机姓名',
-                        formatter: function (value, row, index) {
-                            if (row.driver) {
-                                return row.driver.driverName;
-                            } else {
-                                return "暂无";
-                            }
-                        },
-                        width: 90
-                    }
+                    //隐藏的
+                    {field: 'driverFirstName', title: '姓', width: 150,hidden:true},
+                    {field: 'driverLastName', title: '名', width: 150,hidden:true},
+                    {field: 'carType', title: '类型', width: 150,hidden:true},
+                    {field: 'carColor', title: '颜色', width: 150,hidden:true},
+                    {field: 'carSeat', title: '座位数', width: 150,hidden:true},
+                    {field: 'driverName', title: '司机姓名', width: 150},
+                    {field: 'driverCardid', title: '牌照', width: 150},
+                    {field: 'driverPhone', title: '司机电话 ', width: 150},
+                    {field: 'driverSex', title: '性别', width: 150},
+                    {field: 'carStatus', title: '状态', width: 150},
+                    {field: 'carNum', title: '当前人数', width: 150},
+                    {field: 'distance', title: '距离', width: 150},
                 ]],
                 toolbar: "#toolbar"//工具栏
             });
@@ -134,7 +119,7 @@
                         if (r) {
                             $.ajax({
                                 type: "post",
-                                url: "deleteCar",
+                                url: "../driver/deleteDriver",
                                 data: {ids: ids},
                                 dataType: 'json',
                                 success: function (data) {
@@ -177,7 +162,7 @@
                                 var data = $("#addForm").serialize();//序列化表单信息
                                 $.ajax({
                                     type: "post",
-                                    url: "addCar",
+                                    url: "../driver/insertDriver",
                                     data: data,
                                     dataType: 'json',
                                     success: function (data) {
@@ -198,11 +183,15 @@
                         plain: true,
                         iconCls: 'icon-reload',
                         handler: function () {
-                            $("#add_carName").textbox('setValue', "");
+                            $("#add_driverFirstName").textbox('setValue', "");
+                            $("#add_driverLastName").textbox('setValue', "");
+                            $("#add_driverSex").textbox('setValue', "男");
+                            $("#add_driverPhone").textbox('setValue', "");
+                            $("#add_driverPassword").textbox('setValue', "");
+                            $("#add_driverCardid").textbox('setValue', "");
                             $("#add_carType").textbox('setValue', "");
-                            $("#add_carLicense").textbox('setValue', "");
-                            $("#add_carTonnage").textbox('setValue', "");
-                            $("#add_carPerformance").textbox('setValue', "");
+                            $("#add_carColor").textbox('setValue', "");
+                            $("#add_carSeat").textbox('setValue', "");
                         }
                     }
                 ]
@@ -234,7 +223,7 @@
                                 debugger;
                                 $.ajax({
                                     type: "post",
-                                    url: "editCar",
+                                    url: "../driver/editDriver",
                                     data: data,
                                     dataType: 'json',
                                     success: function (data) {
@@ -259,30 +248,39 @@
                         plain: true,
                         iconCls: 'icon-reload',
                         handler: function () {
-                            $("#edit_carName").textbox('setValue', "");
+                            $("#edit_driverFirstName").textbox('setValue', "");
+                            $("#edit_driverLastName").textbox('setValue', "");
+                            $("#edit_driverSex").textbox('setValue', "男");
+                            $("#edit_driverPhone").textbox('setValue', "");
+                            $("#edit_driverPassword").textbox('setValue', "");
+                            $("#edit_driverCardid").textbox('setValue', "");
                             $("#edit_carType").textbox('setValue', "");
-                            $("#edit_carLicense").textbox('setValue', "");
-                            $("#edit_carTonnage").textbox('setValue', "");
-                            $("#edit_carPerformance").textbox('setValue', "");
+                            $("#edit_carColor").textbox('setValue', "");
+                            $("#edit_carSeat").textbox('setValue', "");
                         }
                     }
                 ],
                 //打开窗口前先初始化表单数据(表单回显)
                 onBeforeOpen: function () {
                     var selectRow = $("#dataList").datagrid("getSelected");
-                    $("#edit_id").val(selectRow.carId);//初始化id值,需根据id更新汽车信息
-                    $("#edit_carName").textbox('setValue', selectRow.carName);
+                    $("#edit_id").val(selectRow.driverId);//初始化id值,需根据id更新汽车信息
+                    $("#edit_driverFirstName").textbox('setValue', selectRow.driverFirstName);
+                    $("#edit_driverLastName").textbox('setValue', selectRow.driverLastName);
+                    $("#edit_driverSex").textbox('setValue', selectRow.driverSex);
+                    $("#edit_driverPhone").textbox('setValue', selectRow.driverPhone);
+                    $("#edit_driverPassword").textbox('setValue', selectRow.driverPassword);
+                    $("#edit_driverCardid").textbox('setValue', selectRow.driverCardid);
                     $("#edit_carType").textbox('setValue', selectRow.carType);
-                    $("#edit_carLicense").textbox('setValue', selectRow.carLicense);
-                    $("#edit_carTonnage").textbox('setValue', selectRow.carTonnage);
-                    $("#edit_carPerformance").textbox('setValue', selectRow.carPerformance);
+                    $("#edit_carColor").textbox('setValue', selectRow.carColor);
+                    $("#edit_carSeat").textbox('setValue', selectRow.carSeat);
+
                 }
             });
 
             //业主与班级名搜索按钮的监听事件(将其值返回给Controller)
             $("#search-btn").click(function () {
                 $('#dataList').datagrid('load', {
-                    carName: $('#search-carName').val(),//获取汽车名称
+                    distance: $('#search-distance').val(),//获取汽车名称
                 });
             });
 
@@ -334,11 +332,11 @@
 
 <!-- 工具栏 -->
 <div id="toolbar">
-    <div style="float: left;"><a id="add" href="javascript:" class="easyui-linkbutton"
-                                 data-options="iconCls:'icon-add',plain:true">添加</a></div>
-    <div style="float: left;" class="datagrid-btn-separator"></div>
     <%-- 通过JSTL设置用户操作权限: 将修改和删除按钮设置为仅管理员可见	 --%>
-    <c:if test="${userType==1 || userType== 3 }">
+    <c:if test="${userType==1}">
+        <div style="float: left;"><a id="add" href="javascript:" class="easyui-linkbutton"
+                                     data-options="iconCls:'icon-add',plain:true">添加</a></div>
+        <div style="float: left;" class="datagrid-btn-separator"></div>
         <div style="float: left;"><a id="edit" href="javascript:" class="easyui-linkbutton"
                                      data-options="iconCls:'icon-edit',plain:true">修改</a></div>
         <div style="float: left;" class="datagrid-btn-separator"></div>
@@ -350,8 +348,16 @@
         <div style="float: left;" class="datagrid-btn-separator"></div>
 
         <a href="javascript:" class="easyui-linkbutton"
-           data-options="iconCls:'icon-user-student',plain:true">汽车名称</a>
-        <input id="search-carName" class="easyui-textbox" name="carName"/>
+           data-options="iconCls:'icon-user-student',plain:true">距离(小于)</a>
+        <select name="distance" id="search-distance" class="easyui-combobox"
+                data-options="editable: false, panelHeight: 50, width: 100, height: 30,
+                            required:true, missingMessage:'请选择距离哟~'">
+            <option value="">请选择</option>
+            <option value="5">5km</option>
+            <option value="10">10km</option>
+            <option value="15">15km</option>
+        </select>
+
         <!-- 搜索按钮 -->
         <a id="search-btn" href="javascript:" class="easyui-linkbutton"
            data-options="iconCls:'icon-search',plain:true">搜索</a>
@@ -364,38 +370,70 @@
         <table id="addTable" style="border-collapse:separate; border-spacing:0 3px;" cellpadding="6">
             <!-- 存储所上传的头像路径 -->
             <tr>
-                <td>名称</td>
+                <td>姓</td>
                 <td colspan="1">
-                    <input id="add_carName" style="width: 200px; height: 30px;" class="easyui-textbox"
-                           type="text" name="carName" data-options="required:true, missingMessage:'请填写名称哟~'"/>
+                    <input id="add_driverFirstName" style="width: 200px; height: 30px;" class="easyui-textbox"
+                           type="text" name="driverFirstName" data-options="required:true, missingMessage:'请填写姓~'"/>
                 </td>
             </tr>
             <tr>
-                <td>类型</td>
+                <td>名</td>
                 <td>
-                    <input id="add_carType" style="width: 200px; height: 30px;" class="easyui-textbox"
-                           type="text" name="carType" data-options="required:true, missingMessage:'请填写类型哟~'"/>
+                    <input id="add_driverLastName" style="width: 200px; height: 30px;" class="easyui-textbox"
+                           type="text" name="driverLastName" data-options="required:true, missingMessage:'请填写名~'"/>
+                </td>
+            </tr>
+            <tr>
+                <td>性别</td>
+                <td colspan="1">
+                    <select id="add_driverSex" class="easyui-combobox"
+                            data-options="editable: false, panelHeight: 50, width: 60, height: 30,
+                                required:true, missingMessage:'请选择状态哟~'" name="driverSex">
+                        <option value="男">男</option>
+                        <option value="女">女</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>电话</td>
+                <td colspan="1">
+                    <input id="add_driverPhone" style="width: 200px; height: 30px;" class="easyui-textbox"
+                           type="text" name="driverPhone" data-options="required:true, missingMessage:'请填写电话哟~'"/>
+                </td>
+            </tr>
+            <tr>
+                <td>密码</td>
+                <td colspan="1">
+                    <input id="add_driverPassword" style="width: 200px; height: 30px;" class="easyui-textbox"
+                           type="text" name="driverPassword" data-options="required:true, missingMessage:'请填写密码哟~'"/>
                 </td>
             </tr>
             <tr>
                 <td>牌照</td>
                 <td colspan="1">
-                    <input class="easyui-textbox" name="carLicense"
-                           data-options="required:true,showSeconds:false" value="3/4/2010" style="width:150px">
+                    <input id="add_driverCardid" style="width: 200px; height: 30px;" class="easyui-textbox"
+                           type="text" name="driverCardid" data-options="required:true, missingMessage:'请填写牌照哟~'"/>
                 </td>
             </tr>
             <tr>
-                <td>吨位</td>
+                <td>汽车类型</td>
                 <td colspan="1">
-                    <input id="add_carTonnage" style="width: 200px; height: 30px;" class="easyui-textbox"
-                           type="text" name="carTonnage" data-options="required:true, missingMessage:'请填写吨位哟~'"/>
+                    <input id="add_carType" style="width: 200px; height: 30px;" class="easyui-textbox"
+                           type="text" name="carType" data-options="required:true, missingMessage:'请填写类型哟~'"/>
                 </td>
             </tr>
             <tr>
-                <td>汽车性能</td>
+                <td>颜色</td>
                 <td colspan="1">
-                    <input id="add_carPerformance" style="width: 200px; height: 30px;" class="easyui-textbox"
-                           type="text" name="carPerformance" data-options="required:true, missingMessage:'请填写性能哟~'"/>
+                    <input id="add_carColor" style="width: 200px; height: 30px;" class="easyui-textbox"
+                           type="text" name="carColor" data-options="required:true, missingMessage:'请填写颜色哟~'"/>
+                </td>
+            </tr>
+            <tr>
+                <td>座位数</td>
+                <td colspan="1">
+                    <input id="add_carSeat" style="width: 200px; height: 30px;" class="easyui-textbox"
+                           type="text" name="carSeat" data-options="required:true, missingMessage:'请填写座位数哟~'"/>
                 </td>
             </tr>
         </table>
@@ -406,43 +444,75 @@
 <!-- 修改信息窗口 -->
 <div id="editDialog" style="padding: 20px 0 0 65px">
     <form id="editForm" method="post" action="#">
-        <input type="hidden" id="edit_id" name="carId"/>
+        <input type="hidden" id="edit_id" name="driverId"/>
         <table id="editTable" style="border-collapse:separate; border-spacing:0 3px;" cellpadding="6">
-        <tr>
-            <td>名称</td>
-            <td colspan="1">
-                <input id="edit_carName" style="width: 200px; height: 30px;" class="easyui-textbox"
-                       type="text" name="carName" data-options="required:true, missingMessage:'请填写名称哟~'"/>
-            </td>
-        </tr>
-        <tr>
-            <td>类型</td>
-            <td>
-                <input id="edit_carType" style="width: 200px; height: 30px;" class="easyui-textbox"
-                       type="text" name="carType" data-options="required:true, missingMessage:'请填写类型哟~'"/>
-            </td>
-        </tr>
-        <tr>
-            <td>牌照</td>
-            <td colspan="1">
-                <input id="edit_carLicense" class="easyui-textbox" name="carLicense"
-                       data-options="required:true,showSeconds:false" value="3/4/2010" style="width:150px">
-            </td>
-        </tr>
-        <tr>
-            <td>吨位</td>
-            <td colspan="1">
-                <input id="edit_carTonnage" style="width: 200px; height: 30px;" class="easyui-textbox"
-                       type="text" name="carTonnage" data-options="required:true, missingMessage:'请填写吨位哟~'"/>
-            </td>
-        </tr>
-        <tr>
-            <td>汽车性能</td>
-            <td colspan="1">
-                <input id="edit_carPerformance" style="width: 200px; height: 30px;" class="easyui-textbox"
-                       type="text" name="carPerformance" data-options="required:true, missingMessage:'请填写性能哟~'"/>
-            </td>
-        </tr>
+            <tr>
+                <td>姓</td>
+                <td colspan="1">
+                    <input id="edit_driverFirstName" style="width: 200px; height: 30px;" class="easyui-textbox"
+                           type="text" name="driverFirstName" data-options="required:true, missingMessage:'请填写姓~'"/>
+                </td>
+            </tr>
+            <tr>
+                <td>名</td>
+                <td>
+                    <input id="edit_driverLastName" style="width: 200px; height: 30px;" class="easyui-textbox"
+                           type="text" name="driverLastName" data-options="required:true, missingMessage:'请填写名~'"/>
+                </td>
+            </tr>
+            <tr>
+                <td>性别</td>
+                <td colspan="1">
+                    <select id="edit_driverSex" class="easyui-combobox"
+                            data-options="editable: false, panelHeight: 50, width: 60, height: 30,
+                                required:true, missingMessage:'请选择状态哟~'" name="driverSex">
+                        <option value="男">男</option>
+                        <option value="女">女</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>电话</td>
+                <td colspan="1">
+                    <input id="edit_driverPhone" style="width: 200px; height: 30px;" class="easyui-textbox"
+                           type="text" name="driverPhone" data-options="required:true, missingMessage:'请填写电话哟~'"/>
+                </td>
+            </tr>
+            <tr>
+                <td>密码</td>
+                <td colspan="1">
+                    <input id="edit_driverPassword" style="width: 200px; height: 30px;" class="easyui-textbox"
+                           type="text" name="driverPassword" data-options="required:true, missingMessage:'请填写密码哟~'"/>
+                </td>
+            </tr>
+            <tr>
+                <td>牌照</td>
+                <td colspan="1">
+                    <input id="edit_driverCardid" style="width: 200px; height: 30px;" class="easyui-textbox"
+                           type="text" name="driverCardid" data-options="required:true, missingMessage:'请填写牌照哟~'"/>
+                </td>
+            </tr>
+            <tr>
+                <td>汽车类型</td>
+                <td colspan="1">
+                    <input id="edit_carType" style="width: 200px; height: 30px;" class="easyui-textbox"
+                           type="text" name="carType" data-options="required:true, missingMessage:'请填写类型哟~'"/>
+                </td>
+            </tr>
+            <tr>
+                <td>颜色</td>
+                <td colspan="1">
+                    <input id="edit_carColor" style="width: 200px; height: 30px;" class="easyui-textbox"
+                           type="text" name="carColor" data-options="required:true, missingMessage:'请填写颜色哟~'"/>
+                </td>
+            </tr>
+            <tr>
+                <td>座位数</td>
+                <td colspan="1">
+                    <input id="edit_carSeat" style="width: 200px; height: 30px;" class="easyui-textbox"
+                           type="text" name="carSeat" data-options="required:true, missingMessage:'请填写座位数哟~'"/>
+                </td>
+            </tr>
         </table>
     </form>
 </div>

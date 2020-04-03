@@ -82,7 +82,7 @@
                 AND drivercardid = #{driverCardid}
             </if>
             <if test=" carType !=null and  carType !=''">
-                AND caryype = #{carType}
+                AND cartype = #{carType}
             </if>
             <if test=" carColor !=null and  carColor !=''">
                 AND carcolor = #{carColor}
@@ -94,6 +94,11 @@
                 AND distance &lt;= #{distance}
             </if>
         </where>
+    </select>
+
+    <!--司机登陆 还是手机号来-->
+    <select id="driverLogin" resultMap="driverResultMapper">
+
     </select>
 
 </mapper>

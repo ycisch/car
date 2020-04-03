@@ -51,4 +51,13 @@ public interface DriverMapper {
     */
     int deleteDriver(Integer[] ids);
 
+    /**
+    *@Description: 司机登陆
+    *@Param: [driver]
+    *@return: com.project.model.Driver
+    *@Author: Administrator
+    *@date: 2020/4/3
+    */
+    Driver driverLogin(Driver driver);
+
 }

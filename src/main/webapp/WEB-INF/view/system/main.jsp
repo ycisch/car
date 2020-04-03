@@ -94,7 +94,7 @@
                     ]
                 },
                 </c:if>
-                <c:if test="${userType == 2 || userType == 1}">
+                <c:if test="${userType == 2}">
                 {
                     "menuid": "5", "icon": "", "menuname": "个人行程记录",
                     "menus": [
@@ -104,12 +104,12 @@
                             "icon": "icon-settings",
                             "url": "../sys/recordList"
                         },
-                        {
-                            "menuid": "26",
-                            "menuname": "收藏列表",
-                            "icon": "icon-settings",
-                            "url": "../sys/choucanglist"
-                        },
+                        // {
+                        //     "menuid": "26",
+                        //     "menuname": "收藏列表",
+                        //     "icon": "icon-settings",
+                        //     "url": "../sys/choucanglist"
+                        // },
                         {
                             "menuid": "27",
                             "menuname": "订单列表",
@@ -119,7 +119,7 @@
                     ]
                 },
                 </c:if>
-                <c:if test="${userType == 2 || userType == 1}">
+                <c:if test="${userType == 2}">
                 {
                     "menuid": "6", "icon": "", "menuname": "出行服务",
                     "menus": [
@@ -139,7 +139,7 @@
                             "menuid": "30",
                             "menuname": "查看附近车辆",
                             "icon": "icon-edit",
-                            "url": "../driver/inputPosition"
+                            "url": "../sys/driverList"
                         },
                         {
                             "menuid": "31",
@@ -162,7 +162,7 @@
                     ]
                 },
                 </c:if>
-                <c:if test="${userType == 3 || userType == 1}">
+                <c:if test="${userType == 3}">
                 {
                     "menuid": "7", "icon": "", "menuname": "出行服务",
                     "menus": [
